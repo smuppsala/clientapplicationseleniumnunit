@@ -1,0 +1,156 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Repo\\clientapplicationseleniumnunit\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{32E04580-DF0B-F60F-A4D8-082FE15487A9}|ClientApplicationTestProject.csproj|c:\\repo\\clientapplicationseleniumnunit\\pages\\clientloginpage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32E04580-DF0B-F60F-A4D8-082FE15487A9}|ClientApplicationTestProject.csproj|solutionrelative:pages\\clientloginpage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Repo\\ClientApplication\\ClientApplication\\UnitTest1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32E04580-DF0B-F60F-A4D8-082FE15487A9}|ClientApplicationTestProject.csproj|c:\\repo\\clientapplicationseleniumnunit\\pages\\cartpage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32E04580-DF0B-F60F-A4D8-082FE15487A9}|ClientApplicationTestProject.csproj|solutionrelative:pages\\cartpage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32E04580-DF0B-F60F-A4D8-082FE15487A9}|ClientApplicationTestProject.csproj|c:\\repo\\clientapplicationseleniumnunit\\tests\\dashboardtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32E04580-DF0B-F60F-A4D8-082FE15487A9}|ClientApplicationTestProject.csproj|solutionrelative:tests\\dashboardtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32E04580-DF0B-F60F-A4D8-082FE15487A9}|ClientApplicationTestProject.csproj|c:\\repo\\clientapplicationseleniumnunit\\tests\\clientlogintests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32E04580-DF0B-F60F-A4D8-082FE15487A9}|ClientApplicationTestProject.csproj|solutionrelative:tests\\clientlogintests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32E04580-DF0B-F60F-A4D8-082FE15487A9}|ClientApplicationTestProject.csproj|c:\\repo\\clientapplicationseleniumnunit\\pages\\dashboardpage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32E04580-DF0B-F60F-A4D8-082FE15487A9}|ClientApplicationTestProject.csproj|solutionrelative:pages\\dashboardpage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32E04580-DF0B-F60F-A4D8-082FE15487A9}|ClientApplicationTestProject.csproj|c:\\repo\\clientapplicationseleniumnunit\\utilities\\testbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32E04580-DF0B-F60F-A4D8-082FE15487A9}|ClientApplicationTestProject.csproj|solutionrelative:utilities\\testbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32E04580-DF0B-F60F-A4D8-082FE15487A9}|ClientApplicationTestProject.csproj|c:\\repo\\clientapplicationseleniumnunit\\pages\\basepage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32E04580-DF0B-F60F-A4D8-082FE15487A9}|ClientApplicationTestProject.csproj|solutionrelative:pages\\basepage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 9,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UnitTest1.cs",
+              "DocumentMoniker": "C:\\Repo\\ClientApplication\\ClientApplication\\UnitTest1.cs",
+              "RelativeDocumentMoniker": "..\\ClientApplication\\ClientApplication\\UnitTest1.cs",
+              "ToolTip": "C:\\Repo\\ClientApplication\\ClientApplication\\UnitTest1.cs",
+              "RelativeToolTip": "..\\ClientApplication\\ClientApplication\\UnitTest1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-12T10:50:02.021Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CartPage.cs",
+              "DocumentMoniker": "C:\\Repo\\clientapplicationseleniumnunit\\Pages\\CartPage.cs",
+              "RelativeDocumentMoniker": "Pages\\CartPage.cs",
+              "ToolTip": "C:\\Repo\\clientapplicationseleniumnunit\\Pages\\CartPage.cs",
+              "RelativeToolTip": "Pages\\CartPage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-11T02:18:27.695Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DashboardTests.cs",
+              "DocumentMoniker": "C:\\Repo\\clientapplicationseleniumnunit\\Tests\\DashboardTests.cs",
+              "RelativeDocumentMoniker": "Tests\\DashboardTests.cs",
+              "ToolTip": "C:\\Repo\\clientapplicationseleniumnunit\\Tests\\DashboardTests.cs",
+              "RelativeToolTip": "Tests\\DashboardTests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-11T01:10:19.625Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ClientLoginTests.cs",
+              "DocumentMoniker": "C:\\Repo\\clientapplicationseleniumnunit\\Tests\\ClientLoginTests.cs",
+              "RelativeDocumentMoniker": "Tests\\ClientLoginTests.cs",
+              "ToolTip": "C:\\Repo\\clientapplicationseleniumnunit\\Tests\\ClientLoginTests.cs",
+              "RelativeToolTip": "Tests\\ClientLoginTests.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAwwCsAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-11T01:08:50.208Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DashboardPage.cs",
+              "DocumentMoniker": "C:\\Repo\\clientapplicationseleniumnunit\\Pages\\DashboardPage.cs",
+              "RelativeDocumentMoniker": "Pages\\DashboardPage.cs",
+              "ToolTip": "C:\\Repo\\clientapplicationseleniumnunit\\Pages\\DashboardPage.cs",
+              "RelativeToolTip": "Pages\\DashboardPage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-11T01:03:30.244Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "TestBase.cs",
+              "DocumentMoniker": "C:\\Repo\\clientapplicationseleniumnunit\\Utilities\\TestBase.cs",
+              "RelativeDocumentMoniker": "Utilities\\TestBase.cs",
+              "ToolTip": "C:\\Repo\\clientapplicationseleniumnunit\\Utilities\\TestBase.cs",
+              "RelativeToolTip": "Utilities\\TestBase.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAwwCYAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T23:27:48.577Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "BasePage.cs",
+              "DocumentMoniker": "C:\\Repo\\clientapplicationseleniumnunit\\Pages\\BasePage.cs",
+              "RelativeDocumentMoniker": "Pages\\BasePage.cs",
+              "ToolTip": "C:\\Repo\\clientapplicationseleniumnunit\\Pages\\BasePage.cs",
+              "RelativeToolTip": "Pages\\BasePage.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAowAgAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T23:20:52.072Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ClientLoginPage.cs",
+              "DocumentMoniker": "C:\\Repo\\clientapplicationseleniumnunit\\Pages\\ClientLoginPage.cs",
+              "RelativeDocumentMoniker": "Pages\\ClientLoginPage.cs",
+              "ToolTip": "C:\\Repo\\clientapplicationseleniumnunit\\Pages\\ClientLoginPage.cs",
+              "RelativeToolTip": "Pages\\ClientLoginPage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T22:31:42.714Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

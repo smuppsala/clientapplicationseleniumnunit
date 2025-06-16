@@ -1,0 +1,12 @@
+[
+    {
+        "Email": "wrong@example.com",
+        "Password": "wrongpass",
+        "IsValid": false
+    },
+    {
+        "Email": "tt@tt.com",
+        "Password": "Test@12345",
+        "IsValid": true
+    }
+]
