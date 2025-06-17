@@ -1,6 +1,7 @@
 ﻿using ClientApplication.Pages;
 using ClientApplication.Utilities;
 using ClientApplicationTestProject.Flows;
+using ClientApplicationTestProject.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ClientApplication.Tests
@@ -20,6 +21,26 @@ namespace ClientApplication.Tests
         {
             bool productAddedToCart = _dashboardPage.AddProductToCartByName(productName);
             Assert.IsTrue(productAddedToCart, $"Product '{productName}' was not found on the dashboard.");
+        }
+
+        [TestCaseSource(nameof(Product))]
+        public void ProductCanBeAddedToCart_FromDashboardUsingProductModel(ProductModel productModel)
+        {
+            bool productAddedToCart = _dashboardPage.AddProductToCartByName(productModel.Product);
+            Assert.IsTrue(productAddedToCart, $"Product '{productModel.Product}' was not found on the dashboard.");
+        }
+
+        public static IEnumerable<ProductModel> Product()
+        {
+            yield return new ProductModel()
+            {
+                Product = "ZARA COAT 3"
+            };
+            yield return new ProductModel()
+            {
+                Product = "ADIDAS ORIGINAL"
+            };
+
         }
     }
 }

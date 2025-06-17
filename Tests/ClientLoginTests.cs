@@ -8,18 +8,16 @@ namespace ClientApplication.Tests
     public class ClientLoginTests : TestBase
     {
         private ClientLoginPage _loginPage;
+        private const string TestDataPath = @"Data\LoginTestData.json";
+        public static IEnumerable<LoginTestModel> ValidLoginData => JsonDataReader.GetValidLogins(TestDataPath);
+        public static IEnumerable<LoginTestModel> InvalidLoginData => JsonDataReader.GetInvalidLogins(TestDataPath);
+
         [SetUp]
         public void TestSetup()
         {
             _loginPage = new ClientLoginPage(Driver);
             _loginPage.GoTo();
         }
-
-        private const string TestDataPath = @"Data\LoginTestData.json";
-        public static IEnumerable<LoginTestModel> ValidLoginData => JsonDataReader.GetValidLogins(TestDataPath);
-        public static IEnumerable<LoginTestModel> InvalidLoginData => JsonDataReader.GetInvalidLogins(TestDataPath);
-
-
 
         [Test, TestCaseSource(nameof(ValidLoginData))]
         public void ValidLoginTest(LoginTestModel data)
