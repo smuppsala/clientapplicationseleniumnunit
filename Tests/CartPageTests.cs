@@ -9,12 +9,11 @@ using ClientApplicationTestProject.Pages;
 
 namespace ClientApplicationTestProject.Tests
 {
-    [TestFixture]
     public class CartPageTests : TestBase
     {
         private CartPage _cartPage;
         private OrderReviewPage _orderReviewPage;
-        private string productName = "ZARA COAT 3";
+        private readonly string productName = "ZARA COAT 3";
 
         [SetUp]
         public void SetUp()
