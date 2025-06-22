@@ -1,8 +1,5 @@
 ﻿using ClientApplication.Models;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace ClientApplication.Utilities
 {
@@ -25,6 +22,12 @@ namespace ClientApplication.Utilities
             return LoadData(jsonPath).Where(data => !data.IsValid);
         }
 
-       
+        public static List<T> LoadModels<T>(string relativeFilePath)
+        {
+            var jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativeFilePath);
+            var jsonString = File.ReadAllText(jsonFilePath);
+            return System.Text.Json.JsonSerializer.Deserialize<List<T>>(jsonString);
+        }
+
     }
 }
