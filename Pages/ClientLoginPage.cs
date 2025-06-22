@@ -25,11 +25,6 @@ namespace ClientApplication.Pages
         public void EnterEmail(string email) => WaitClearAndEnterText(EmailInput, email);
         public void EnterPassword(string password) => WaitClearAndEnterText(PasswordInput, password);
 
-        //  public void EnterEmail(string email) => Driver.FindElement(EmailInput).SendKeys(email);
-        // public void EnterPassword(string pwd) => Driver.FindElement(PasswordInput).SendKeys(pwd);
-
-        // Submit the form
-        // public void ClickLogin() => Driver.FindElement(LoginButton).Click();
         public void ClickLogin() => WaitAndClick(LoginButton);
 
         public void Login(string email, string password) 
@@ -42,5 +37,21 @@ namespace ClientApplication.Pages
         // public string GetErrorText() => WaitForElementVisible(ErrorMessage).Text;
          public string GetErrorText() => WaitGetElementText(ErrorMessage);
         public bool IsSignOutVisible() => WaitForElementVisible(LogoutButton).Displayed;
+
+        public string GetTextInEmailField() 
+        {
+
+            return WaitGetElementText(EmailInput);
+        }
+
+        public string GetTextInPasswordField()
+        {
+            return WaitGetElementText(PasswordInput);
+        }
+
+        public bool StillInLoginPage() 
+        {
+            return WaitForElementVisible(LoginButton).Displayed;
+        }
     }
 }
