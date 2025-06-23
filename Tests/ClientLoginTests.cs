@@ -2,8 +2,12 @@ using ClientApplication.Models;
 using ClientApplication.Pages;
 using ClientApplication.Utilities;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
+using ClientApplicationTestProject.Drivers;
 
-namespace ClientApplication.Tests
+
+namespace ClientApplicationTestProject.Tests
 {
     public class ClientLoginTests : TestBase
     {
@@ -19,25 +23,26 @@ namespace ClientApplication.Tests
             _loginPage.GoTo();
         }
 
-        [Test, TestCaseSource(nameof(ValidLoginData))]
+        [Test, TestCaseSource(nameof(ValidLoginData)), Order(2)]
         public void ValidLoginTest(LoginTestModel data)
         {
             _loginPage.Login(data.Email, data.Password);
-            Assert.IsTrue(_loginPage.IsSignOutVisible(), "Signout button should be visible after login.");
+            Assert.That(_loginPage.IsSignOutVisible(), Is.True,"Signout button should be visible after login.");
+            
         }
 
         // This test will fail because error message population and disappearing is very quick. 
-        [Test, TestCaseSource(nameof(InvalidLoginData))]
+        [Test, TestCaseSource(nameof(InvalidLoginData)), Order(1)]
         public void InvalidLoginTest(LoginTestModel data)
         {
             _loginPage.Login(data.Email, data.Password);
 
             bool stillLoginBtnDisplayed = _loginPage.StillInLoginPage();
 
-            Assert.IsTrue(stillLoginBtnDisplayed, "Login button should be visible after invalid login");
+            Assert.That(stillLoginBtnDisplayed,Is.True, "Login button should be visible after invalid login");
         }
 
-        [Test]
+        [Test, Order(3)]
         public void TestLoginWithJsonData()
         {
             // this method has written before putting into a generic json data read method
@@ -53,10 +58,10 @@ namespace ClientApplication.Tests
             _loginPage.Login(validLogin.Email, validLogin.Password);
 
             // Assert login result (customize as needed)
-            Assert.IsTrue(_loginPage.IsSignOutVisible(), "Signout button should be visible after login.");
+            Assert.That(_loginPage.IsSignOutVisible(),Is.True, "Signout button should be visible after login.");
         }
 
-        [Test]
+        [Test, Order(4)]
         public void TestLoginWithJsonDataUsingGenericMethod()
         {
             // Calling json file reader methos and putting data into LoginTestModels
@@ -68,7 +73,8 @@ namespace ClientApplication.Tests
             _loginPage.Login(validLogin.Email, validLogin.Password);
 
             // Assert login result (customize as needed)
-            Assert.IsTrue(_loginPage.IsSignOutVisible(), "Signout button should be visible after login.");
+            var getLoggedIn = _loginPage.IsLoggedIn();
+            Assert.That(getLoggedIn.homeDisplayed && getLoggedIn.signoutDisplayed, " Home and Signout buttons should be visible after login.");
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using ClientApplication.Utilities;
 using ClientApplicationTestProject.Flows;
 using ClientApplicationTestProject.Pages;
+using FluentAssert;
+using Microsoft.Testing.Platform.Configurations;
 
 namespace ClientApplicationTestProject.Tests
 {
@@ -20,23 +22,28 @@ namespace ClientApplicationTestProject.Tests
             _thankyouOrderPage = new PlaceOrderFlow(Driver).PlaceOrderAndNavigateToThankyouPage(countryName);
         }
 
-        [Test]
+        [Test, Order(2)]
         public void ThankyouMessage_AndOrderIdHasGenerated()
-        {                     
+        {
             string orderIdFromLbl = _thankyouOrderPage.ExtractOrderId_FromLable();
             string orderIdFromURL = _thankyouOrderPage.ExtractOrderId_FromURL();
-            Assert.IsTrue(_thankyouOrderPage.IsThankYouMessageDisplayed(), "Order confirmation message not displayed.");
+            Assert.That(_thankyouOrderPage.IsThankYouMessageDisplayed(), Is.True, "Order confirmation message not displayed.");
             Assert.That(orderIdFromLbl, Is.EqualTo(orderIdFromURL));
 
+            // FluentAssertions usage
+            orderIdFromLbl.ShouldBeEqualTo(orderIdFromURL); 
         }
 
-        [Test]
+        [Test, Order(1)]
         public void NavigateToOrderPage_AfterPlacingOrder()
         {
             _thankyouOrderPage.GoToOrderHistoryPage();
             _ordersPage = new OrdersPage(Driver);
             string orderPageHeading = _ordersPage.IsAtOrderPage();
             Assert.That(orderPageHeading, Is.EqualTo("Your Orders"));
+
+            // FluentAssertions usage
+            orderPageHeading.ShouldContain("Your Orders");
         }
     }
 }

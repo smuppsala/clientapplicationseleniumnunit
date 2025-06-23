@@ -6,6 +6,7 @@ using ClientApplication.Models;
 using System.Linq;
 using ClientApplicationTestProject.Flows;
 using ClientApplicationTestProject.Pages;
+using Microsoft.Testing.Platform.Configurations;
 
 namespace ClientApplicationTestProject.Tests
 {
@@ -26,7 +27,7 @@ namespace ClientApplicationTestProject.Tests
         public void AddedProductDisplayed_InCart()
         {
             bool productInCart = _cartPage.IsProductInCart(productName);
-            Assert.IsTrue(productInCart, $"Product '{productName}' was not found in the cart.");
+            Assert.That(productInCart,Is.True, $"Product '{productName}' was not found in the cart.");
         }
 
         [Test]

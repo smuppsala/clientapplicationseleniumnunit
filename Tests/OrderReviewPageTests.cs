@@ -8,6 +8,7 @@ using ClientApplication.Pages;
 using ClientApplication.Utilities;
 using ClientApplicationTestProject.Flows;
 using ClientApplicationTestProject.Pages;
+using Microsoft.Testing.Platform.Configurations;
 
 namespace ClientApplicationTestProject.Tests
 {
@@ -33,7 +34,7 @@ namespace ClientApplicationTestProject.Tests
             _orderReviewPage.PlaceOrder();
             _thankyouOrderPage = new ThankYouOrderPage(Driver);
             bool thankyouTextDisplayed = _thankyouOrderPage.IsThankYouMessageDisplayed();
-            Assert.IsTrue(thankyouTextDisplayed, "Order confirmation message not displayed.");
+            Assert.That(thankyouTextDisplayed, Is.True, "Order confirmation message not displayed.");
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ClientApplication.Pages;
 using ClientApplication.Utilities;
+using Microsoft.Testing.Platform.Configurations;
 using OpenQA.Selenium;
 
 namespace ClientApplicationTestProject.Flows
@@ -28,7 +29,7 @@ namespace ClientApplicationTestProject.Flows
             loginPage.Login(validCreds.Email, validCreds.Password);
 
             // Assert login succeeded
-            Assert.IsTrue(loginPage.IsSignOutVisible(), "Expected logout button to be visible after valid login.");
+            Assert.That(loginPage.IsSignOutVisible(),Is.True, "Expected signout button to be visible after valid login.");
 
             return new DashboardPage(_driver);
         }
