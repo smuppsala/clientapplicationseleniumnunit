@@ -2,9 +2,10 @@
 using ClientApplication.Utilities;
 using ClientApplicationTestProject.Flows;
 using ClientApplicationTestProject.Models;
+using Microsoft.Testing.Platform.Configurations;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace ClientApplication.Tests
+namespace ClientApplicationTestProject.Tests
 {
     public class DashboardTests : TestBase
     {
@@ -20,14 +21,14 @@ namespace ClientApplication.Tests
         public void ProductCanBeAddedToCart_FromDashboard(string productName)
         {
             bool productAddedToCart = _dashboardPage.AddProductToCartByName(productName);
-            Assert.IsTrue(productAddedToCart, $"Product '{productName}' was not found on the dashboard.");
+            Assert.That(productAddedToCart,Is.True, $"Product '{productName}' was not found on the dashboard.");
         }
 
         [TestCaseSource(nameof(Product))]
         public void ProductCanBeAddedToCart_FromDashboardUsingProductModel(ProductModel productModel)
         {
             bool productAddedToCart = _dashboardPage.AddProductToCartByName(productModel.Product);
-            Assert.IsTrue(productAddedToCart, $"Product '{productModel.Product}' was not found on the dashboard.");
+            Assert.That(productAddedToCart, Is.True, $"Product '{productModel.Product}' was not found on the dashboard.");
         }
 
         public static IEnumerable<ProductModel> Product()

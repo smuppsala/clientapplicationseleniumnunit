@@ -1,25 +1,38 @@
-﻿
+﻿using System.Configuration;
+using System.Collections.Specialized;
+using NUnit.Framework;
+using System.Configuration;
 using OpenQA.Selenium;
+using ClientApplicationTestProject.Drivers;
+using Microsoft.Testing.Platform.Configurations;
+using ClientApplicationTestProject.Config;
 
 namespace ClientApplication.Pages
 {
     public class ClientLoginPage : BasePage
     {
 
-        public ClientLoginPage(IWebDriver driver) : base(driver) { }
-
-        // Page URL
-        public string Url => "https://rahulshettyacademy.com/client";
+        public ClientLoginPage(IWebDriver driver) : base(driver)
+        {
+        }
 
         // Locators
         private By EmailInput => By.Id("userEmail");
         private By PasswordInput => By.Id("userPassword");
         private By LoginButton => By.Id("login");
         private By ErrorMessage => By.CssSelector(".toast-container.toast-message");
-        private By LogoutButton => By.XPath("//button[text()=' Sign Out ']");
+        private By SignOutButton => By.XPath("//button[text()=' Sign Out ']");
+        private By HomeButton => By.XPath("//button[text()=' HOME ']");
 
         // Navigate to the login page
-        public void GoTo() => Driver.Navigate().GoToUrl(Url);
+        public void GoTo()
+        {
+            var baseUrl = EnvironmentConfig.Url;
+            Driver.Navigate().GoToUrl(baseUrl);
+
+            //var projectRoot = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\.."));
+            //var screenshotsDir = System.IO.Path.Combine(projectRoot, "Screenshots");
+        }
 
         // Fill in login form
         public void EnterEmail(string email) => WaitClearAndEnterText(EmailInput, email);
@@ -36,7 +49,13 @@ namespace ClientApplication.Pages
 
         // public string GetErrorText() => WaitForElementVisible(ErrorMessage).Text;
          public string GetErrorText() => WaitGetElementText(ErrorMessage);
-        public bool IsSignOutVisible() => WaitForElementVisible(LogoutButton).Displayed;
+        public bool IsSignOutVisible() => WaitForElementVisible(SignOutButton).Displayed;
+
+        //returning multiple elements from Method using Tuples 
+        public (bool homeDisplayed, bool signoutDisplayed) IsLoggedIn() 
+        {
+            return (WaitForElementVisible(HomeButton).Displayed, WaitForElementVisible(SignOutButton).Displayed);
+        }
 
         public string GetTextInEmailField() 
         {

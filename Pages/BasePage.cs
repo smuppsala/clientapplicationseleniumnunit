@@ -1,6 +1,8 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using System;
+using System.Configuration;
 
 namespace ClientApplication.Pages
 {
@@ -13,10 +15,18 @@ namespace ClientApplication.Pages
 
 
         // Base constructor for all page objects. Initializes the WebDriver and sets up a WebDriverWait
-        protected BasePage(IWebDriver driver, int waitTimeInSeconds = 10)
+        protected BasePage(IWebDriver driver)
         {
             Driver = driver;
-            Wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(waitTimeInSeconds));
+
+            int waitTime = 10;
+            string configWait = ConfigurationManager.AppSettings["ImplicitWait"];
+            if (int.TryParse(configWait, out int result))
+            {
+                waitTime = result;
+            }
+
+            Wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(waitTime));
         }
 
         // Wait for element to be visible
