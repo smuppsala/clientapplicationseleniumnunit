@@ -5,6 +5,7 @@ using System.Configuration;
 using OpenQA.Selenium;
 using ClientApplicationTestProject.Drivers;
 using Microsoft.Testing.Platform.Configurations;
+using ClientApplicationTestProject.Config;
 
 namespace ClientApplication.Pages
 {
@@ -14,9 +15,6 @@ namespace ClientApplication.Pages
         public ClientLoginPage(IWebDriver driver) : base(driver)
         {
         }
-
-        // Page URL
-        // public string Url => ConfigurationManager.AppSettings["BaseUrl"];
 
         // Locators
         private By EmailInput => By.Id("userEmail");
@@ -29,8 +27,11 @@ namespace ClientApplication.Pages
         // Navigate to the login page
         public void GoTo()
         {
-            string baseUrl = ConfigurationManager.AppSettings.Get("BaseUrl");
+            var baseUrl = EnvironmentConfig.Url;
             Driver.Navigate().GoToUrl(baseUrl);
+
+            //var projectRoot = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\.."));
+            //var screenshotsDir = System.IO.Path.Combine(projectRoot, "Screenshots");
         }
 
         // Fill in login form

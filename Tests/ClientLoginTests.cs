@@ -5,6 +5,8 @@ using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using ClientApplicationTestProject.Drivers;
+using ClientApplicationTestProject.Utilities;
+using System.Data;
 
 
 namespace ClientApplicationTestProject.Tests
@@ -15,6 +17,7 @@ namespace ClientApplicationTestProject.Tests
         private const string TestDataPath = @"Data\LoginTestData.json";
         public static IEnumerable<LoginTestModel> ValidLoginData => JsonDataReader.GetValidLogins(TestDataPath);
         public static IEnumerable<LoginTestModel> InvalidLoginData => JsonDataReader.GetInvalidLogins(TestDataPath);
+
 
         [SetUp]
         public void TestSetup()
@@ -75,6 +78,26 @@ namespace ClientApplicationTestProject.Tests
             // Assert login result (customize as needed)
             var getLoggedIn = _loginPage.IsLoggedIn();
             Assert.That(getLoggedIn.homeDisplayed && getLoggedIn.signoutDisplayed, " Home and Signout buttons should be visible after login.");
+        }
+
+        [Test, Order(5)]
+        public void LoginWithExcelData() 
+        {
+            string filePath = @"Data/LoginData.xlsx";
+            //Populate data to a data table
+            DataTable table = ExcelReader.ExcelToDataTable(filePath);
+
+            //reading userEmail and Paasword from data table
+            string userEmail = table.Rows[0][0].ToString();
+            string password = table.Rows[0][1].ToString();
+
+            //print data 
+            Console.WriteLine($"UserEmail: {userEmail} and Password: {password}");
+            _loginPage.Login(userEmail, password);
+
+            var getLoggedIn = _loginPage.IsLoggedIn();
+            Assert.That(getLoggedIn.homeDisplayed && getLoggedIn.signoutDisplayed, " Home and Signout buttons should be visible after login.");
+
         }
     }
 }

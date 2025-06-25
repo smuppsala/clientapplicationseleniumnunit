@@ -4,34 +4,21 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using NUnit.Framework;
 using ClientApplicationTestProject.Drivers;
+using ClientApplicationTestProject.Config;
 
 namespace ClientApplication.Utilities
 {
     public class TestBase
     {
         protected IWebDriver Driver;
-        string browser = ConfigurationManager.AppSettings.Get("BaseUrl");
+     //   string browser = ConfigurationManager.AppSettings.Get("BaseUrl");
 
         [SetUp]
         public void Setup()
         {
-            Driver = DriverFactory.GetDriver();
-
-            int implicitWait = 5; // Default
-            string waitFromConfig = ConfigurationManager.AppSettings["ImplicitWait"];
-            if (int.TryParse(waitFromConfig, out int waitConfigValue))
-            {
-                implicitWait = waitConfigValue;
-            }
-
-            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(implicitWait);
-
-            string baseUrl = ConfigurationManager.AppSettings["BaseUrl"];
-            if (!string.IsNullOrEmpty(baseUrl))
-            {
-                Driver.Navigate().GoToUrl(baseUrl);
-            }
-
+            Driver = new ChromeDriver();
+            Driver.Manage().Window.Maximize();
+            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
 
         }
 
@@ -45,6 +32,11 @@ namespace ClientApplication.Utilities
                 if (screenshotDriver != null)
                 {
                     var ss = screenshotDriver.GetScreenshot();
+                    var screenshotsDir = System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, "Screenshots");
+                    if (!System.IO.Directory.Exists(screenshotsDir))
+                    {
+                        System.IO.Directory.CreateDirectory(screenshotsDir);
+                    }
                     var fileName = $"FailedTest_{DateTime.Now:yyyyMMdd_HHmmss}.png";
                     var filePath = System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, fileName);
                     ss.SaveAsFile(filePath);

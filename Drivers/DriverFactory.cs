@@ -1,39 +1,26 @@
 ﻿using System.Configuration;
-using System.Collections.Specialized;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 
 namespace ClientApplicationTestProject.Drivers
 {
-    public class DriverFactory
+    public static class DriverFactory
     {
-        
-
-        public static IWebDriver GetDriver()
+       /* public static IWebDriver GetDriver()
         {
-            string browser = ConfigurationManager.AppSettings.Get("Browser");
+            string? browser = ConfigurationManager.AppSettings["Browser"];
+            if(browser != null)
 
-           /* if (string.IsNullOrEmpty(browser))
+            return browser.ToLower() switch
             {
-                throw new ConfigurationErrorsException("The 'Browser' setting is missing or empty in the configuration file.");
-            } */
+                "chrome" => new ChromeDriver(),
+                "firefox" => new FirefoxDriver(),
+                _ => throw new NotSupportedException($"Browser '{browser}' is not supported")
+                
+            };
+        } */
 
-            IWebDriver driver;
 
-            switch (browser.ToLower())
-            {
-                case "firefox":
-                    driver = new FirefoxDriver();
-                    break;
-                case "chrome":
-                default:
-                    driver = new ChromeDriver();
-                    break;
-            }
-
-            driver.Manage().Window.Maximize();
-            return driver;
-        }
     }
 }
