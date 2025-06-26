@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using ClientApplication.Pages;
 using OpenQA.Selenium;
-using SeleniumExtras.WaitHelpers;
 
 namespace ClientApplicationTestProject.Pages
 {
@@ -11,6 +10,7 @@ namespace ClientApplicationTestProject.Pages
         private By ThankyouTextLbl => By.CssSelector(".hero-primary");
         private By OrderRefLbl => By.CssSelector(".em-spacer-1 .ng-star-inserted");
         private By OrderHistoryPageLinkTxt => By.CssSelector("label[routerlink*='myorders']");
+        public string _orderId;
 
         public bool IsThankYouMessageDisplayed()
         {
@@ -25,17 +25,17 @@ namespace ClientApplicationTestProject.Pages
             return orderId;
         }
 
-        public string ExtractOrderId_FromURL() 
+        public string ExtractOrderId_FromURL()
         {
-            string url= Driver.Url;
+            string url = Driver.Url;
             string param = url.Split("prop=")[1];
             string decoded = WebUtility.UrlDecode(param); // decoded = ["684c0e8f81a2069530757aad"]
             int firstQuote = decoded.IndexOf('\"') + 1;
             int lastQuote = decoded.LastIndexOf('\"');
-            string orderId = decoded.Substring(firstQuote, lastQuote - firstQuote);
+            _orderId = decoded.Substring(firstQuote, lastQuote - firstQuote);
 
             //string orderId = refId[1].Split("%")[0];
-            return orderId;
+            return _orderId;
         }
 
         public void waitForThankYouPageToDisappear()

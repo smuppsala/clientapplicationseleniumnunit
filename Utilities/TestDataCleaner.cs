@@ -11,13 +11,28 @@ namespace ClientApplicationTestProject.Utilities
         private CartPage _cartPage;
         private DashboardPage _dashboardPage;
         private MainMenuPage _mainMenuPage;
+        private ThankYouOrderPage _thankYouOrderPage;
+        
+       
         public TestDataCleaner(IWebDriver driver)
         {
             _driver = driver;
         }
 
-        public void DeleteTestOrder(string orderId)
+        public void DeleteTestOrder()
         {
+            string orderId = TestDataCache.Get<string>("LastCreatedOrderId"); // Specify the type argument explicitly
+            TestDataCache.Remove("LastCreatedOrderId");
+
+            _orderPage = new OrdersPage(_driver);
+            _orderPage.DeleteOrder(orderId);
+        }
+
+        public void DeletePlacedOrder() 
+        {
+            _thankYouOrderPage = new ThankYouOrderPage(_driver);
+            string orderId = _thankYouOrderPage.ExtractOrderId_FromURL();
+            _thankYouOrderPage.GoToOrderHistoryPage();
             _orderPage = new OrdersPage(_driver);
             _orderPage.DeleteOrder(orderId);
         }

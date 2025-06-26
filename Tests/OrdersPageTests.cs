@@ -3,6 +3,7 @@ using ClientApplication.Pages;
 using ClientApplication.Utilities;
 using ClientApplicationTestProject.Flows;
 using ClientApplicationTestProject.Pages;
+using ClientApplicationTestProject.Utilities;
 using Microsoft.Testing.Platform.Configurations;
 using OpenQA.Selenium;
 
@@ -14,7 +15,10 @@ namespace ClientApplicationTestProject.Tests
         private OrdersPage _ordersPage;
         private string productName = "ZARA COAT 3";
         private string countryName = "India";
-        private string orderId;
+        public string orderId;
+
+        // Constants for cache keys
+        private const string OrderIdCacheKey = "LastCreatedOrderId";
 
         [SetUp]
         public void SetUp()
@@ -26,6 +30,10 @@ namespace ClientApplicationTestProject.Tests
             _thankyouOrderPage.IsThankYouMessageDisplayed(); // check the page has loaded already 
             
             orderId = _thankyouOrderPage.ExtractOrderId_FromURL();
+
+            // Save the order ID in the cache for access by TestDataCleaner
+            TestDataCache.Set(OrderIdCacheKey, orderId);
+
             _thankyouOrderPage.GoToOrderHistoryPage();
 
         }
