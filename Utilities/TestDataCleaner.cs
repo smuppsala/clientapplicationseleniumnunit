@@ -43,14 +43,20 @@ namespace ClientApplicationTestProject.Utilities
             _cartPage.DeleteCartProduct();
         }
 
-        public void GoToCartPageIfItemsExist() 
+        public void GoToCartPageIfItemsExistAndClearCart() 
         {
-            _dashboardPage = new DashboardPage(_driver);
-            var cartItems = _dashboardPage.GetNumberOfProductsInCart();
-            if (cartItems != null) 
+            _mainMenuPage = new MainMenuPage(_driver);
+            bool productsInCart = _mainMenuPage.IsItemsExistsInCart();
+            if (productsInCart == false) 
             {
-                _dashboardPage.GoToCart();
+                _mainMenuPage.SignOut();
             }
+            else
+            {
+                _mainMenuPage.GoToCart();
+                ClearCart();
+                _mainMenuPage.SignOut();
+            }    
         }
 
         public void SignOut()

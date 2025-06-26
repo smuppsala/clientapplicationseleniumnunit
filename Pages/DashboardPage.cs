@@ -52,11 +52,5 @@ namespace ClientApplication.Pages
             WaitAndClick(CartIcon);
         }
 
-        public string GetNumberOfProductsInCart()
-        {
-            var cartValue = WaitGetElementText(CartItemsNumber);
-            return cartValue;
-        }
-
     }
 }
