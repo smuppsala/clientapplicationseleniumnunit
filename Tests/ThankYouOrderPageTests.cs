@@ -1,6 +1,7 @@
 ﻿using ClientApplication.Utilities;
 using ClientApplicationTestProject.Flows;
 using ClientApplicationTestProject.Pages;
+using ClientApplicationTestProject.Utilities;
 using FluentAssert;
 using Microsoft.Testing.Platform.Configurations;
 
@@ -12,6 +13,9 @@ namespace ClientApplicationTestProject.Tests
         private OrdersPage _ordersPage;
         private string productName = "ZARA COAT 3";
         private string countryName = "India";
+        public string orderId;
+        // Constants for cache keys
+        private const string OrderIdCacheKey = "LastCreatedOrderId";
 
         [SetUp]
         public void SetUp()
@@ -20,6 +24,9 @@ namespace ClientApplicationTestProject.Tests
             new AddToCartFlow(Driver).AddProductToCartAndGoToCart(productName);
             new CheckoutFlow(Driver).CheckoutAndNavigateToOrderReview();
             _thankyouOrderPage = new PlaceOrderFlow(Driver).PlaceOrderAndNavigateToThankyouPage(countryName);
+            orderId = _thankyouOrderPage.ExtractOrderId_FromURL();
+            // Save the order ID in the cache for access by TestDataCleaner
+            TestDataCache.Set(OrderIdCacheKey, orderId);
         }
 
         [Test, Order(2)]
@@ -27,6 +34,7 @@ namespace ClientApplicationTestProject.Tests
         {
             string orderIdFromLbl = _thankyouOrderPage.ExtractOrderId_FromLable();
             string orderIdFromURL = _thankyouOrderPage.ExtractOrderId_FromURL();
+
             Assert.That(_thankyouOrderPage.IsThankYouMessageDisplayed(), Is.True, "Order confirmation message not displayed.");
             Assert.That(orderIdFromLbl, Is.EqualTo(orderIdFromURL));
 

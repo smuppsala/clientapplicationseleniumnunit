@@ -8,7 +8,7 @@ namespace ClientApplicationTestProject.Pages
         public OrdersPage(IWebDriver driver) : base(driver) { }
         private By YourOrdersLbl => By.CssSelector("h1");
         private By TableRows => By.CssSelector("tbody tr");
-
+        private ThankYouOrderPage _thankYouOrderPage;
 
         public string IsAtOrderPage()
         {
@@ -40,8 +40,8 @@ namespace ClientApplicationTestProject.Pages
             var orderTableRows = WaitForElementsVisible(TableRows);
             foreach (var row in orderTableRows)
             {
-                var orderRows = row.FindElement(By.CssSelector("th"));
-                if (orderRows.Text.Contains(orderId))
+                var orderIdText = row.FindElement(By.CssSelector("th")).Text;
+                if (orderIdText.Contains(orderId))
                 {
                     //Click on delete
                     row.FindElement(By.ClassName("btn-danger")).Click();
