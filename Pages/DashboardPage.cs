@@ -13,6 +13,7 @@ namespace ClientApplication.Pages
         private By CartIcon => By.CssSelector("button[routerlink*='cart']");
         private By SuccessMessage => By.CssSelector(".toast-success");
         private By AddToCartSuccessMessage => By.Id("#toast-container");
+        private By CartItemsNumber => By.XPath("//button[@class='btn btn-custom']//label");
 
 
         public string ProductAddedText() => WaitForElementVisible(SuccessMessage).Text;
@@ -51,6 +52,11 @@ namespace ClientApplication.Pages
             WaitAndClick(CartIcon);
         }
 
+        public string GetNumberOfProductsInCart()
+        {
+            var cartValue = WaitGetElementText(CartItemsNumber);
+            return cartValue;
+        }
 
     }
 }

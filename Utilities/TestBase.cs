@@ -5,12 +5,14 @@ using OpenQA.Selenium.Chrome;
 using NUnit.Framework;
 using ClientApplicationTestProject.Drivers;
 using ClientApplicationTestProject.Config;
+using ClientApplicationTestProject.Utilities;
 
 namespace ClientApplication.Utilities
 {
     public class TestBase
     {
         protected IWebDriver Driver;
+        private string _orderId;
      //   string browser = ConfigurationManager.AppSettings.Get("BaseUrl");
 
         [SetUp]
@@ -43,6 +45,23 @@ namespace ClientApplication.Utilities
                     Console.WriteLine($"Screenshot saved to {filePath}");
                 }
             }
+                var cleaner = new TestDataCleaner(Driver);
+                var currentURL = Driver.Url;
+                if (currentURL == "https://rahulshettyacademy.com/client/dashboard/myorders")
+                {
+                    cleaner.DeleteTestOrder(_orderId);
+                }
+                if (currentURL == "https://rahulshettyacademy.com/client/dashboard/cart")
+                {
+                    cleaner.ClearCart();
+                }
+                if (currentURL == "https://rahulshettyacademy.com/client/dashboard/dash") 
+                {
+                    cleaner.GoToCartPageIfItemsExist();
+                    cleaner.ClearCart();
+                }
+                cleaner.SignOut();
+
             if (Driver != null)
             {
                 Driver.Quit();

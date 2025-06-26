@@ -12,6 +12,7 @@ namespace ClientApplication.Pages
         //  private IWebElement CheckoutBtn => Driver.FindElement(By.CssSelector("li.totalRow button"));
         private By CheckoutBtn => By.CssSelector("li.totalRow button");
         private By cartProductNames => By.CssSelector(".cartSection h3");
+        private By DeleteBtns => By.ClassName("btn-danger");
 
         /// Gets a read-only collection of all product name elements currently displayed in the cart.
         /// Uses the specified selector to find product name elements within the cart section.
@@ -28,6 +29,16 @@ namespace ClientApplication.Pages
         public void ProceedToCheckout()
         {
             WaitAndClick(CheckoutBtn);
+        }
+
+        public void DeleteCartProduct() 
+        {
+
+                var deleteButtons = WaitForElementsVisible(DeleteBtns);
+                foreach (var btn in deleteButtons)
+                {
+                    btn.Click();
+                }
         }
     }
 }
