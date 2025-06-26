@@ -34,5 +34,20 @@ namespace ClientApplicationTestProject.Pages
             }
             return "Unable to Find the OderId in Order List";
         }
+
+        public void DeleteOrder(string orderId) 
+        {
+            var orderTableRows = WaitForElementsVisible(TableRows);
+            foreach (var row in orderTableRows)
+            {
+                var orderRows = row.FindElement(By.CssSelector("th"));
+                if (orderRows.Text.Contains(orderId))
+                {
+                    //Click on delete
+                    row.FindElement(By.ClassName("btn-danger")).Click();
+                    break;
+                }
+            }
+        }
     }
 }
