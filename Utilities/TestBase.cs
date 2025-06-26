@@ -54,12 +54,14 @@ namespace ClientApplication.Utilities
             {
                 cleaner.ClearCart();
             }
-            if (currentURL == "https://rahulshettyacademy.com/client/dashboard/dash")
+            if (currentURL.Contains("https://rahulshettyacademy.com/client/dashboard/"))
             {
-                cleaner.GoToCartPageIfItemsExist();
-                cleaner.ClearCart();
+                cleaner.GoToCartPageIfItemsExistAndClearCart();
             }
-            cleaner.SignOut();
+            if (currentURL == "https://rahulshettyacademy.com/client/dashboard") 
+            {
+                cleaner.SignOut();
+            }
 
             if (Driver != null)
             {
