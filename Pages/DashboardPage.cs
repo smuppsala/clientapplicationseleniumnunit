@@ -10,11 +10,11 @@ namespace ClientApplication.Pages
         public DashboardPage(IWebDriver driver) : base(driver) { }
 
         private By ProductList => By.CssSelector(".card-body"); // card of each product
-        private By CartIcon => By.CssSelector("button[routerlink*='cart']");
+        private By CartIconLink => By.CssSelector("button[routerlink*='cart']");
         private By SuccessMessage => By.CssSelector(".toast-success");
         private By AddToCartSuccessMessage => By.Id("#toast-container");
         private By CartItemsNumber => By.XPath("//button[@class='btn btn-custom']//label");
-
+        private By AddToCartBtns => By.ClassName("fa-shopping-cart");
 
         public string ProductAddedText() => WaitForElementVisible(SuccessMessage).Text;
 
@@ -28,8 +28,9 @@ namespace ClientApplication.Pages
 
                 if (productTitle.Equals(productName, StringComparison.OrdinalIgnoreCase))
                 {
-                    var addToCartButton = product.FindElement(By.CssSelector(".fa-shopping-cart"));
+                    var addToCartButton = product.FindElement(AddToCartBtns);
                     addToCartButton.Click();
+                    waitForLoadingToDisappear();
                     return true;
                 }
             }
@@ -49,7 +50,7 @@ namespace ClientApplication.Pages
 
         public void GoToCart()
         {
-            WaitAndClick(CartIcon);
+            WaitAndClick(CartIconLink);
         }
 
     }
