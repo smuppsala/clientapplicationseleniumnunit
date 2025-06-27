@@ -1,4 +1,5 @@
-﻿using ClientApplicationTestProject.Utilities;
+﻿using AventStack.ExtentReports;
+using ClientApplicationTestProject.Utilities;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
@@ -7,46 +8,74 @@ namespace ClientApplication.Utilities
     public class TestBase
     {
         protected IWebDriver Driver;
-        private string _orderId;
+        protected ExtentTest _test;
         //   string browser = ConfigurationManager.AppSettings.Get("BaseUrl");
+
+        [OneTimeSetUp]
+        public void BeforeClass()
+        {
+            //Initialize Extent Report at the begining of the test class execution
+            ExtentReportHelper.InitializeReport();
+        }
 
         [SetUp]
         public void Setup()
         {
+            //Create a new test in the report for each test case
+            _test = ExtentReportHelper.Extent.CreateTest(TestContext.CurrentContext.Test.Name,
+                "Test Description: " + TestContext.CurrentContext.Test.Properties.Get("Description"));
+
             Driver = new ChromeDriver();
             Driver.Manage().Window.Maximize();
             Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            _test.Log(Status.Info, "Browser started and configured");
 
         }
 
         [TearDown]
         public void Teardown()
         {
-            if (TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
+            var status = TestContext.CurrentContext.Result.Outcome.Status;
+            var errorMessage = string.IsNullOrEmpty(TestContext.CurrentContext.Result.Message)
+                ? "" : TestContext.CurrentContext.Result.Message;
+            var stackTrace = string.IsNullOrEmpty(TestContext.CurrentContext.Result.StackTrace)
+                ? "" : TestContext.CurrentContext.Result.StackTrace;
+
+            switch (status)
             {
-                Console.WriteLine("Test Failed. Capturing screenshot...");
-                var screenshotDriver = Driver as ITakesScreenshot;
-                if (screenshotDriver != null)
-                {
-                    var ss = screenshotDriver.GetScreenshot();
-                    var screenshotsDir = System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, "Screenshots");
-                    if (!System.IO.Directory.Exists(screenshotsDir))
+                case NUnit.Framework.Interfaces.TestStatus.Failed:
+                    _test.Log(Status.Fail, $"Test failed with error: {errorMessage}");
+                    _test.Log(Status.Fail, $"Stack Trace: {stackTrace}");
+
+                    // Capture screenshot for failed test
+                    if (Driver != null)
                     {
-                        System.IO.Directory.CreateDirectory(screenshotsDir);
+                        string screenshotPath = ExtentReportHelper.CaptureScreenshot(Driver, TestContext.CurrentContext.Test.Name);
+                        _test.AddScreenCaptureFromPath(screenshotPath, "Screenshot of failure");
                     }
-                    var fileName = $"FailedTest_{DateTime.Now:yyyyMMdd_HHmmss}.png";
-                    var filePath = System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, fileName);
-                    ss.SaveAsFile(filePath);
-                    Console.WriteLine($"Screenshot saved to {filePath}");
-                }
+                    break;
+
+                case NUnit.Framework.Interfaces.TestStatus.Passed:
+                    _test.Log(Status.Pass, "Test passed successfully");
+                    break;
+
+                case NUnit.Framework.Interfaces.TestStatus.Skipped:
+                    _test.Log(Status.Skip, "Test skipped");
+                    break;
+
+                default:
+                    _test.Log(Status.Warning, "Test completed with unknown status");
+                    break;
             }
+
+            // Cleanup code
             var cleaner = new TestDataCleaner(Driver);
             var currentURL = Driver.Url;
             if (currentURL == "https://rahulshettyacademy.com/client/dashboard/myorders")
             {
                 cleaner.DeleteTestOrder();
             }
-            if (currentURL.Contains ("https://rahulshettyacademy.com/client/dashboard/thanks"))
+            if (currentURL.Contains("https://rahulshettyacademy.com/client/dashboard/thanks"))
             {
                 cleaner.DeletePlacedOrder();
             }
@@ -58,7 +87,7 @@ namespace ClientApplication.Utilities
             {
                 cleaner.GoToCartPageIfItemsExistAndClearCart();
             }
-            if (currentURL == "https://rahulshettyacademy.com/client/dashboard") 
+            if (currentURL == "https://rahulshettyacademy.com/client/dashboard")
             {
                 cleaner.SignOut();
             }
@@ -69,6 +98,13 @@ namespace ClientApplication.Utilities
                 Driver.Dispose();
             }
 
+        }
+
+        [OneTimeTearDown]
+        public void AfterClass()
+        {
+            // Flush the report after all tests in the class have been executed
+            ExtentReportHelper.FlushReport();
         }
     }
 }
