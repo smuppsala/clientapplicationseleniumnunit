@@ -4,7 +4,7 @@ using SeleniumExtras.WaitHelpers;
 using System;
 using System.Configuration;
 
-namespace ClientApplication.Pages
+namespace ClientApplicationTestProject.Pages
 {
     public abstract class BasePage
     {

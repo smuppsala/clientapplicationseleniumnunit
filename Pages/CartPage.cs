@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace ClientApplication.Pages
+namespace ClientApplicationTestProject.Pages
 {
     public class CartPage : BasePage
     {

@@ -3,7 +3,7 @@ using SeleniumExtras.WaitHelpers;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 
-namespace ClientApplication.Pages
+namespace ClientApplicationTestProject.Pages
 {
     public class DashboardPage : BasePage
     {

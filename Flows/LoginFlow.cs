@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ClientApplication.Pages;
-using ClientApplication.Utilities;
+using ClientApplicationTestProject.Pages;
+using ClientApplicationTestProject.Utilities;
 using Microsoft.Testing.Platform.Configurations;
 using OpenQA.Selenium;
 

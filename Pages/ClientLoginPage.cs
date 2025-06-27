@@ -7,7 +7,7 @@ using ClientApplicationTestProject.Drivers;
 using Microsoft.Testing.Platform.Configurations;
 using ClientApplicationTestProject.Config;
 
-namespace ClientApplication.Pages
+namespace ClientApplicationTestProject.Pages
 {
     public class ClientLoginPage : BasePage
     {

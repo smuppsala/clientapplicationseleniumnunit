@@ -1,7 +1,7 @@
-﻿using ClientApplication.Models;
+﻿using ClientApplicationTestProject.Models;
 using Newtonsoft.Json;
 
-namespace ClientApplication.Utilities
+namespace ClientApplicationTestProject.Utilities
 {
     public static class JsonDataReader
     {

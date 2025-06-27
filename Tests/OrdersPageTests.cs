@@ -1,6 +1,6 @@
-﻿using ClientApplication.Models;
-using ClientApplication.Pages;
-using ClientApplication.Utilities;
+﻿using ClientApplicationTestProject.Models;
+using ClientApplicationTestProject.Pages;
+using ClientApplicationTestProject.Utilities;
 using ClientApplicationTestProject.Flows;
 using ClientApplicationTestProject.Pages;
 using ClientApplicationTestProject.Utilities;

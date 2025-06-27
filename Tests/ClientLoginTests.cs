@@ -1,6 +1,5 @@
-using ClientApplication.Models;
-using ClientApplication.Pages;
-using ClientApplication.Utilities;
+using ClientApplicationTestProject.Models;
+using ClientApplicationTestProject.Pages;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
