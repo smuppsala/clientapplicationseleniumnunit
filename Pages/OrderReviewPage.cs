@@ -1,4 +1,4 @@
-﻿using ClientApplication.Pages;
+﻿using ClientApplicationTestProject.Pages;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 

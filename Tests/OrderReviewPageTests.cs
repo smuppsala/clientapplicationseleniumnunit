@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ClientApplication.Models;
-using ClientApplication.Pages;
-using ClientApplication.Utilities;
-using ClientApplicationTestProject.Flows;
+using ClientApplicationTestProject.Models;
 using ClientApplicationTestProject.Pages;
+using ClientApplicationTestProject.Utilities;
+using ClientApplicationTestProject.Flows;
 using Microsoft.Testing.Platform.Configurations;
 
 namespace ClientApplicationTestProject.Tests

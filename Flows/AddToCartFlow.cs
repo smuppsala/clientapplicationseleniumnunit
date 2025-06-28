@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ClientApplication.Pages;
+using ClientApplicationTestProject.Pages;
 using OpenQA.Selenium;
 
 namespace ClientApplicationTestProject.Flows

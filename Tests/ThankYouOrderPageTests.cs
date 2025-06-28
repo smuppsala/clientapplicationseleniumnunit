@@ -1,5 +1,4 @@
-﻿using ClientApplication.Utilities;
-using ClientApplicationTestProject.Flows;
+﻿using ClientApplicationTestProject.Flows;
 using ClientApplicationTestProject.Pages;
 using ClientApplicationTestProject.Utilities;
 using FluentAssert;

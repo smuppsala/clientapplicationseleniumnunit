@@ -1,4 +1,4 @@
-﻿using ClientApplication.Pages;
+﻿using ClientApplicationTestProject.Pages;
 using OpenQA.Selenium;
 
 namespace ClientApplicationTestProject.Pages

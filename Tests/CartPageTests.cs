@@ -1,11 +1,10 @@
 ﻿using System;
 using NUnit.Framework;
-using ClientApplication.Pages;
-using ClientApplication.Utilities;
-using ClientApplication.Models;
+using ClientApplicationTestProject.Pages;
+using ClientApplicationTestProject.Utilities;
+using ClientApplicationTestProject.Models;
 using System.Linq;
 using ClientApplicationTestProject.Flows;
-using ClientApplicationTestProject.Pages;
 using Microsoft.Testing.Platform.Configurations;
 using AventStack.ExtentReports;
 
