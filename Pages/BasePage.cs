@@ -1,8 +1,7 @@
-﻿using OpenQA.Selenium;
+﻿using Microsoft.Extensions.Configuration;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
-using System;
-using System.Configuration;
 
 namespace ClientApplicationTestProject.Pages
 {
@@ -10,18 +9,27 @@ namespace ClientApplicationTestProject.Pages
     {
         protected IWebDriver Driver;
         protected WebDriverWait Wait;
+        private static readonly IConfiguration configuration;
         private By OrdersLink => By.CssSelector("button[routerlink*='myorders']");
         private By CartIcon => By.CssSelector("button[routerlink*='cart']");
 
-
+        //static constructor to initialize configuration
+        static BasePage()
+        {
+            configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+        }
         // Base constructor for all page objects. Initializes the WebDriver and sets up a WebDriverWait
         protected BasePage(IWebDriver driver)
         {
+
             Driver = driver;
 
-            int waitTime = 10;
-            string configWait = ConfigurationManager.AppSettings["ImplicitWait"];
-            if (int.TryParse(configWait, out int result))
+            int waitTime = 10; //default wait time
+            string? configWaitSetting = configuration["TestSettings:ImplicitWait"];
+            if (int.TryParse(configWaitSetting, out int result))
             {
                 waitTime = result;
             }

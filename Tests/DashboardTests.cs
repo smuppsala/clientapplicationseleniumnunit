@@ -1,5 +1,4 @@
 ﻿using ClientApplicationTestProject.Pages;
-using ClientApplicationTestProject.Utilities;
 using ClientApplicationTestProject.Flows;
 using ClientApplicationTestProject.Models;
 using Microsoft.Testing.Platform.Configurations;

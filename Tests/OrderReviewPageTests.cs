@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ClientApplicationTestProject.Models;
 using ClientApplicationTestProject.Pages;
-using ClientApplicationTestProject.Utilities;
 using ClientApplicationTestProject.Flows;
 using Microsoft.Testing.Platform.Configurations;
 

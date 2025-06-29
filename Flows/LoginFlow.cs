@@ -22,7 +22,7 @@ namespace ClientApplicationTestProject.Flows
 
         public DashboardPage LoginAsValidUser() 
         {
-            var loginPage = new ClientLoginPage(_driver);
+            var loginPage = new LoginPage(_driver);
             loginPage.GoTo();
 
             var validCreds = JsonDataReader.GetValidLogins(jsonPath).First();

@@ -3,7 +3,7 @@ using ClientApplicationTestProject.Utilities;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
-namespace ClientApplicationTestProject.Utilities
+namespace ClientApplicationTestProject.Tests
 {
     public class TestBase
     {
