@@ -3,7 +3,6 @@ using ClientApplicationTestProject.Pages;
 using ClientApplicationTestProject.Utilities;
 using ClientApplicationTestProject.Flows;
 using ClientApplicationTestProject.Pages;
-using ClientApplicationTestProject.Utilities;
 using Microsoft.Testing.Platform.Configurations;
 using OpenQA.Selenium;
 

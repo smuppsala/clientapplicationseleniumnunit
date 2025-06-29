@@ -1,18 +1,14 @@
-﻿using System.Configuration;
-using System.Collections.Specialized;
-using NUnit.Framework;
-using System.Configuration;
+﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using ClientApplicationTestProject.Drivers;
 using Microsoft.Testing.Platform.Configurations;
-using ClientApplicationTestProject.Config;
 
 namespace ClientApplicationTestProject.Pages
 {
-    public class ClientLoginPage : BasePage
+    public class LoginPage : BasePage
     {
 
-        public ClientLoginPage(IWebDriver driver) : base(driver)
+        public LoginPage(IWebDriver driver) : base(driver)
         {
         }
 
@@ -29,9 +25,6 @@ namespace ClientApplicationTestProject.Pages
         {
             var baseUrl = EnvironmentConfig.Url;
             Driver.Navigate().GoToUrl(baseUrl);
-
-            //var projectRoot = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\.."));
-            //var screenshotsDir = System.IO.Path.Combine(projectRoot, "Screenshots");
         }
 
         // Fill in login form
@@ -39,6 +32,28 @@ namespace ClientApplicationTestProject.Pages
         public void EnterPassword(string password) => WaitClearAndEnterText(PasswordInput, password);
 
         public void ClickLogin() => WaitAndClick(LoginButton);
+
+        public bool LoginWithDefaultCredentials()
+        {
+            // Validate credentials exist
+            if (string.IsNullOrEmpty(EnvironmentConfig.UserEmail))
+            {
+                Console.WriteLine("ERROR: UserEmail missing in configuration!");
+                throw new InvalidOperationException("Email credential is missing. Check User Secrets configuration.");
+            }
+            if(string.IsNullOrEmpty(EnvironmentConfig.Password))
+    {
+                Console.WriteLine("ERROR: Password missing in configuration!");
+                throw new InvalidOperationException("Password credential is missing. Check User Secrets configuration.");
+            }
+
+            Console.WriteLine($"Using credentials from configuration");
+            EnterEmail(EnvironmentConfig.UserEmail);
+            EnterPassword(EnvironmentConfig.Password);
+            ClickLogin();
+            return true;
+        }
+
 
         public void Login(string email, string password) 
         {

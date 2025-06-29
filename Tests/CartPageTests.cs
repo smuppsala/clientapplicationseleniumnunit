@@ -1,7 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
 using ClientApplicationTestProject.Pages;
-using ClientApplicationTestProject.Utilities;
 using ClientApplicationTestProject.Models;
 using System.Linq;
 using ClientApplicationTestProject.Flows;

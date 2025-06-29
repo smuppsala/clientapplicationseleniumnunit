@@ -1,18 +1,17 @@
+using System.Data;
+using System.Text.Json;
 using ClientApplicationTestProject.Models;
 using ClientApplicationTestProject.Pages;
-using System.Text.Json;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
-using ClientApplicationTestProject.Drivers;
 using ClientApplicationTestProject.Utilities;
-using System.Data;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 
 namespace ClientApplicationTestProject.Tests
 {
     public class ClientLoginTests : TestBase
     {
-        private ClientLoginPage _loginPage;
+        private LoginPage _loginPage;
         private const string TestDataPath = @"Data\LoginTestData.json";
         public static IEnumerable<LoginTestModel> ValidLoginData => JsonDataReader.GetValidLogins(TestDataPath);
         public static IEnumerable<LoginTestModel> InvalidLoginData => JsonDataReader.GetInvalidLogins(TestDataPath);
@@ -21,7 +20,7 @@ namespace ClientApplicationTestProject.Tests
         [SetUp]
         public void TestSetup()
         {
-            _loginPage = new ClientLoginPage(Driver);
+            _loginPage = new LoginPage(Driver);
             _loginPage.GoTo();
         }
 
@@ -29,8 +28,8 @@ namespace ClientApplicationTestProject.Tests
         public void ValidLoginTest(LoginTestModel data)
         {
             _loginPage.Login(data.Email, data.Password);
-            Assert.That(_loginPage.IsSignOutVisible(), Is.True,"Signout button should be visible after login.");
-            
+            Assert.That(_loginPage.IsSignOutVisible(), Is.True, "Signout button should be visible after login.");
+
         }
 
         // This test will fail because error message population and disappearing is very quick. 
@@ -41,10 +40,10 @@ namespace ClientApplicationTestProject.Tests
 
             bool stillLoginBtnDisplayed = _loginPage.StillInLoginPage();
 
-            Assert.That(stillLoginBtnDisplayed,Is.True, "Login button should be visible after invalid login");
+            Assert.That(stillLoginBtnDisplayed, Is.True, "Login button should be visible after invalid login");
         }
 
-        [Test, Order(3)]
+       /* [Test, Order(3)]
         public void TestLoginWithJsonData()
         {
             // this method has written before putting into a generic json data read method
@@ -60,10 +59,10 @@ namespace ClientApplicationTestProject.Tests
             _loginPage.Login(validLogin.Email, validLogin.Password);
 
             // Assert login result (customize as needed)
-            Assert.That(_loginPage.IsSignOutVisible(),Is.True, "Signout button should be visible after login.");
-        }
+            Assert.That(_loginPage.IsSignOutVisible(), Is.True, "Signout button should be visible after login.");
+        }*/
 
-        [Test, Order(4)]
+        [Test, Order(3)]
         public void TestLoginWithJsonDataUsingGenericMethod()
         {
             // Calling json file reader methos and putting data into LoginTestModels
@@ -79,8 +78,8 @@ namespace ClientApplicationTestProject.Tests
             Assert.That(getLoggedIn.homeDisplayed && getLoggedIn.signoutDisplayed, " Home and Signout buttons should be visible after login.");
         }
 
-        [Test, Order(5)]
-        public void LoginWithExcelData() 
+        [Test, Order(4)]
+        public void LoginWithExcelData()
         {
             string filePath = @"Data/LoginData.xlsx";
             //Populate data to a data table
@@ -98,5 +97,51 @@ namespace ClientApplicationTestProject.Tests
             Assert.That(getLoggedIn.homeDisplayed && getLoggedIn.signoutDisplayed, " Home and Signout buttons should be visible after login.");
 
         }
+        [Test]
+        public void LoginWithConfigurationData()
+        {
+            _loginPage.LoginWithDefaultCredentials();
+            var getLoggedIn = _loginPage.IsLoggedIn();
+            Assert.That(getLoggedIn.homeDisplayed && getLoggedIn.signoutDisplayed, " Home and Signout buttons should be visible after login.");
+
+        }
+
+        [Test]
+        public void VerifyLoginWithUserSecrets()
+        {
+            // Setup - Output the credentials being used (without the full password)
+            string userEmail = EnvironmentConfig.UserEmail.Length > 0 ?
+               new string('*', EnvironmentConfig.UserEmail.Length - 2) +
+                                   EnvironmentConfig.UserEmail.Substring(EnvironmentConfig.Password.Length - 2) :
+                                   "null";
+            string maskedPassword = EnvironmentConfig.Password?.Length > 0 ?
+                                   new string('*', EnvironmentConfig.Password.Length - 2) +
+                                   EnvironmentConfig.Password.Substring(EnvironmentConfig.Password.Length - 2) :
+                                   "null";
+
+            Console.WriteLine($"Testing login with: {userEmail} / {maskedPassword}");
+
+            // Test source by comparing with appsettings
+            using (StreamReader r = new StreamReader("appsettings.json"))
+            {
+                string json = r.ReadToEnd();
+                var appsettings = JsonConvert.DeserializeObject<JObject>(json);
+                string appsettingsEmail = appsettings?["TestSettings"]?["Credentials"]?["UserEmail"]?.ToString();
+
+                // If different, likely from User Secrets
+                bool usingUserSecrets = userEmail != appsettingsEmail && !string.IsNullOrEmpty(userEmail);
+                Console.WriteLine($"Using User Secrets: {usingUserSecrets}");
+            }
+
+            // Act
+            _loginPage.LoginWithDefaultCredentials();
+
+            // Assert
+            var loginStatus = _loginPage.IsLoggedIn();
+            Assert.That(loginStatus.homeDisplayed && loginStatus.signoutDisplayed,
+                        "Home and Signout buttons should be visible after login with User Secrets credentials.");
+        }
+
+
     }
 }
