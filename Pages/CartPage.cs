@@ -8,7 +8,7 @@ namespace ClientApplicationTestProject.Pages
 
         private By CheckoutBtn => By.CssSelector("li.totalRow .btn");
         private By cartProductNames => By.CssSelector(".cartSection h3");
-        private By DeleteBtns => By.ClassName("btn-danger");
+        private By DeleteBtns => By.CssSelector("button[class*='danger']");
         private By ContinueShoppingBtn => By.CssSelector(".btn-primary[routerlink*='dashboard']");
         private By NoProductsText => By.XPath("//div[@class='ng-star-inserted']/h1");
 

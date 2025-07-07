@@ -50,7 +50,7 @@ namespace ClientApplicationTestProject.Pages
             return productName;
         }
 
-        public bool AddProductToCartByName(string productName)
+        public void AddProductToCartByName(string productName)
         {
             var products = WaitForElementsVisible(ProductList).ToList();
 
@@ -72,7 +72,6 @@ namespace ClientApplicationTestProject.Pages
 
                     // Wait for loading indicator to disappear
                     waitForLoadingToDisappear();
-                    return true;
                 }
             }
             // Product not found, throw exception
@@ -90,9 +89,10 @@ namespace ClientApplicationTestProject.Pages
         {
             return (WaitForElementVisible(HomeButton).Displayed, WaitForElementVisible(SignOutButton).Displayed);
         }
-        public void waitForLoadingToDisappear()
+        public bool waitForLoadingToDisappear()
         {
             WaitUntilInvisible(AddToCartSuccessMessage);
+            return true;
         }
 
         public CartPage GoToCart()

@@ -10,6 +10,7 @@ namespace ClientApplicationTestProject.Tests
     {
         private LoginPage _loginPage; 
         private DashboardPage _dashboardPage;
+        private MainMenuPage _mainMenuPage;
 
         [SetUp]
         public void BeforeEach()
@@ -22,15 +23,22 @@ namespace ClientApplicationTestProject.Tests
         [TestCase("ZARA COAT 3")]
         public void ProductCanBeAddedToCart_FromDashboard(string productName)
         {
-            bool productAddedToCart = _dashboardPage.AddProductToCartByName(productName);
-            Assert.That(productAddedToCart,Is.True, $"Product '{productName}' was not found on the dashboard.");
+            _dashboardPage.AddProductToCartByName(productName);
+            _dashboardPage.waitForLoadingToDisappear();
+            _mainMenuPage = new MainMenuPage(Driver);
+            var cartValue = _mainMenuPage.GetNumberOfProductsInCart();
+
+            Assert.That(cartValue,Is.Not.Empty, $"Product '{productName}' has not added to cart.");
         }
 
         [TestCaseSource(nameof(Product))]
         public void ProductCanBeAddedToCart_FromDashboardUsingProductModel(ProductModel productModel)
         {
-            bool productAddedToCart = _dashboardPage.AddProductToCartByName(productModel.Product);
-            Assert.That(productAddedToCart, Is.True, $"Product '{productModel.Product}' was not found on the dashboard.");
+            _dashboardPage.AddProductToCartByName(productModel.Product);
+            _dashboardPage.waitForLoadingToDisappear();
+            _mainMenuPage = new MainMenuPage(Driver);
+            var cartValue = _mainMenuPage.GetNumberOfProductsInCart();
+            Assert.That(cartValue, Is.Not.Empty, $"Product '{productModel.Product}' has not added to cart.");
         }
 
         public static IEnumerable<ProductModel> Product()

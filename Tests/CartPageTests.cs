@@ -1,11 +1,5 @@
-﻿using System;
-using NUnit.Framework;
+﻿using AventStack.ExtentReports;
 using ClientApplicationTestProject.Pages;
-using ClientApplicationTestProject.Models;
-using System.Linq;
-using ClientApplicationTestProject.Flows;
-using Microsoft.Testing.Platform.Configurations;
-using AventStack.ExtentReports;
 
 namespace ClientApplicationTestProject.Tests
 {
@@ -24,14 +18,14 @@ namespace ClientApplicationTestProject.Tests
             _loginPage = new LoginPage(Driver);
             _loginPage.GoTo();
             _dashboardPage = _loginPage.LoginWithSecrets();
+            _cartPage = _dashboardPage.GoToCart();
         }
 
         [Test]
         public void AddedProductDisplayed_InCart()
         {
-            _cartPage = _dashboardPage.GoToCart();
             bool productsAvaliability = _cartPage.ProductsAvailableInCart();
-            Assert.That(productsAvaliability, Is.False, "There's No products available in Your Cart");  
+            Assert.That(productsAvaliability, Is.False, "There's No products available in Your Cart");
             Assert.That(_cartPage.CartItems.Count, Is.Zero, "No Products in Your Cart !");
 
             _dashboardPage = _cartPage.ContinueShopping();
@@ -39,29 +33,28 @@ namespace ClientApplicationTestProject.Tests
             _cartPage = _dashboardPage.GoToCart();
             productsAvaliability = _cartPage.ProductsAvailableInCart();
             Assert.That(productsAvaliability, Is.True, $"Products available in the cart.");
-            Assert.That(_cartPage.CartItems.Count, Is.EqualTo(1),"Cart should contain one item after adding an item.");
-           
+            Assert.That(_cartPage.CartItems.Count, Is.EqualTo(1), "Cart should contain one item after adding an item.");
+
             var productInCart = _cartPage.ProductsInCart();
-            Assert.That(productName,Is.EqualTo(productInCart), "Added product in Dashboard is displaying on Cart Page.");
+            Assert.That(productName, Is.EqualTo(productInCart), "Added product in Dashboard is displaying on Cart Page.");
 
         }
 
         [Test]
-        public void CheckoutProduct_AndReturnToOrderReviewPage()
+        public async Task CheckoutProduct_AndReturnToOrderReviewPageAsync()
         {
-            _test.Log(Status.Info, $"Product '{productName}' add to Cart.");
+
+            bool productsAvaliability = _cartPage.ProductsAvailableInCart();
+            Assert.That(productsAvaliability, Is.False, "There's No products available in Your Cart");
+            Assert.That(_cartPage.CartItems.Count, Is.Zero, "No Products in Your Cart !");
+
+            _dashboardPage = _cartPage.ContinueShopping();
             _dashboardPage.AddProductToCartByName(productName);
 
-            _test.Log(Status.Info, "Checking Cart items increased after adding a Product to the Cart.");
-            _mainmenuPage = new MainMenuPage(Driver);
-            var cartItemsCount = _mainmenuPage.GetNumberOfProductsInCart();
-            Assert.That(cartItemsCount, Is.Not.Null, "Cart items count should not be null.");
-
-            _test.Log(Status.Info, "Navigate to Cart page.");
-            _cartPage = _mainmenuPage.GoToCartWhenHaveItemsInIt();
+            _cartPage = _dashboardPage.GoToCart();
 
             _test.Log(Status.Info, "Checking if Product item/items available in Cart page");
-            bool productsAvaliability = _cartPage.ProductsAvailableInCart();
+            productsAvaliability = _cartPage.ProductsAvailableInCart();
 
             if (productsAvaliability)
                 _test.Log(Status.Pass, "User can navigate to Order Review page");
@@ -81,6 +74,7 @@ namespace ClientApplicationTestProject.Tests
                 _test.Log(Status.Fail, "Failed to navigate to Order Review page");
 
             Assert.That(isAtOrderReview, Is.True);
+
         }
     }
 }

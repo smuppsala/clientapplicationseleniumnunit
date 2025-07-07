@@ -31,6 +31,7 @@ namespace ClientApplicationTestProject.Pages
 
         public string GetNumberOfProductsInCart()
         {
+            WaitForElementVisible(CartItemsNumber);
             var cartValue = WaitGetElementText(CartItemsNumber);
             return cartValue;
         }
