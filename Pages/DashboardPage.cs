@@ -72,6 +72,7 @@ namespace ClientApplicationTestProject.Pages
 
                     // Wait for loading indicator to disappear
                     waitForLoadingToDisappear();
+                    return; // Exit the method immediately after performing the action
                 }
             }
             // Product not found, throw exception

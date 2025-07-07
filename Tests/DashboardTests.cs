@@ -24,21 +24,24 @@ namespace ClientApplicationTestProject.Tests
         public void ProductCanBeAddedToCart_FromDashboard(string productName)
         {
             _dashboardPage.AddProductToCartByName(productName);
-            _dashboardPage.waitForLoadingToDisappear();
+            // Add a wait after adding the product to the cart
+            Thread.Sleep(2000); // Wait for 2 seconds
             _mainMenuPage = new MainMenuPage(Driver);
-            var cartValue = _mainMenuPage.GetNumberOfProductsInCart();
+           var items = _mainMenuPage.GetNumberOfProductsInCart();
 
-            Assert.That(cartValue,Is.Not.Empty, $"Product '{productName}' has not added to cart.");
+            Assert.That(items, Is.Not.Null, $"Product '{productName}' has not added to cart.");
         }
 
         [TestCaseSource(nameof(Product))]
         public void ProductCanBeAddedToCart_FromDashboardUsingProductModel(ProductModel productModel)
         {
             _dashboardPage.AddProductToCartByName(productModel.Product);
-            _dashboardPage.waitForLoadingToDisappear();
+            // Add a wait after adding the product to the cart
+            Thread.Sleep(2000); // Wait for 2 seconds
             _mainMenuPage = new MainMenuPage(Driver);
-            var cartValue = _mainMenuPage.GetNumberOfProductsInCart();
-            Assert.That(cartValue, Is.Not.Empty, $"Product '{productModel.Product}' has not added to cart.");
+            var items = _mainMenuPage.GetNumberOfProductsInCart();
+
+            Assert.That(items, Is.Not.Null, $"Product '{productModel.Product}' has not added to cart.");
         }
 
         public static IEnumerable<ProductModel> Product()

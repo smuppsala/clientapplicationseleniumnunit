@@ -19,8 +19,7 @@ namespace ClientApplicationTestProject.Flows
         public CartPage AddProductToCartAndGoToCart(string productName) 
         {
             var dashboardPage = new DashboardPage(_driver);
-            bool productAdded = dashboardPage.AddProductToCartByName(productName);
-            Assert.That(productAdded,Is.True, $"Product '{productName}' was not found on the dashboard.");
+            dashboardPage.AddProductToCartByName(productName);
             dashboardPage.waitForLoadingToDisappear();
             dashboardPage.GoToCart();
 

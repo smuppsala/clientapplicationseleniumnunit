@@ -33,6 +33,16 @@ namespace ClientApplicationTestProject.Pages
         {
             WaitForElementVisible(CartItemsNumber);
             var cartValue = WaitGetElementText(CartItemsNumber);
+            Console.WriteLine(cartValue);
+            if (!int.TryParse(cartValue, out int numericCartValue))
+            {
+                // Handle non-numeric values explicitly
+                return null;
+            }
+            if (numericCartValue <= 0)
+            {
+                return null;
+            }
             return cartValue;
         }
 
