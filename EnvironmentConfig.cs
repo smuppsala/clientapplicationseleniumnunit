@@ -24,9 +24,8 @@ namespace ClientApplicationTestProject
             configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
-// .AddUserSecrets<Program>()
-// To this (uses the current assembly)
-.AddUserSecrets(typeof(EnvironmentConfig).Assembly)
+            // To this (uses the current assembly)
+                .AddUserSecrets(typeof(EnvironmentConfig).Assembly)
                 .AddEnvironmentVariables("TEST_") // Prefix for environment variables
                 .Build();
             // Debug output

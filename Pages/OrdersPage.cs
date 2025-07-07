@@ -16,7 +16,7 @@ namespace ClientApplicationTestProject.Pages
             return WaitGetElementText(YourOrdersLbl);
         }
 
-        public string IsOderIdInOrderList(string orderId)
+        public string CheckAndReturnOderIdFromOrderList(string orderId)
         {
            var rows = WaitForElementsVisible(TableRows);
             foreach (var row in rows) 

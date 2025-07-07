@@ -12,14 +12,21 @@ namespace ClientApplicationTestProject.Pages
         private By CartIcon => By.CssSelector("button[routerlink*='cart']");
         private By CartItemsNumber => By.XPath("//button[@class='btn btn-custom']//label");
 
-        public void SignOut() 
+        public void SignOut()
         {
             WaitAndClick(SignOutButton);
         }
 
-        public void GoToCart()
+        public CartPage GoToCartWhenHaveItemsInIt()
         {
-            WaitAndClick(CartIcon);
+            var cartValue = GetNumberOfProductsInCart();
+            if (cartValue != null)
+            {
+                WaitForElementVisible(CartItemsNumber);
+                WaitAndClick(CartIcon);
+                return new CartPage(Driver);
+            }
+            return null;
         }
 
         public string GetNumberOfProductsInCart()
@@ -39,7 +46,6 @@ namespace ClientApplicationTestProject.Pages
             {
                 return true;
             }
-
         }
     }
 }

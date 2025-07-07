@@ -8,12 +8,15 @@ namespace ClientApplicationTestProject.Tests
 {
     public class DashboardTests : TestBase
     {
+        private LoginPage _loginPage; 
         private DashboardPage _dashboardPage;
 
         [SetUp]
         public void BeforeEach()
         {
-            _dashboardPage = new LoginFlow(Driver).LoginAsValidUser();
+            _loginPage = new LoginPage(Driver);
+            _loginPage.GoTo();
+            _dashboardPage = _loginPage.LoginWithSecrets();
         }
 
         [TestCase("ZARA COAT 3")]

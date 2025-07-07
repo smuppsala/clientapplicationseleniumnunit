@@ -1,24 +1,28 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using ClientApplicationTestProject.Drivers;
-using Microsoft.Testing.Platform.Configurations;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using ClientApplicationTestProject.Listeners;
 
 namespace ClientApplicationTestProject.Pages
 {
     public class LoginPage : BasePage
     {
 
-        public LoginPage(IWebDriver driver) : base(driver)
-        {
-        }
-
         // Locators
         private By EmailInput => By.Id("userEmail");
         private By PasswordInput => By.Id("userPassword");
         private By LoginButton => By.Id("login");
         private By ErrorMessage => By.CssSelector(".toast-container.toast-message");
-        private By SignOutButton => By.XPath("//button[text()=' Sign Out ']");
-        private By HomeButton => By.XPath("//button[text()=' HOME ']");
+
+        //Actions delegated for login events
+        public Action<bool,string> OnLoginAttemptCompleted { get; set; }
+
+        //Add login listner property
+        public ILoginListener LoginListener { get; set; }
+
+        // Constructor 
+        public LoginPage(IWebDriver driver) : base(driver)
+        {
+        }
 
         // Navigate to the login page
         public void GoTo()
@@ -27,65 +31,53 @@ namespace ClientApplicationTestProject.Pages
             Driver.Navigate().GoToUrl(baseUrl);
         }
 
+        // Actions
         // Fill in login form
         public void EnterEmail(string email) => WaitClearAndEnterText(EmailInput, email);
         public void EnterPassword(string password) => WaitClearAndEnterText(PasswordInput, password);
-
         public void ClickLogin() => WaitAndClick(LoginButton);
-
-        public bool LoginWithDefaultCredentials()
-        {
-            // Validate credentials exist
-            if (string.IsNullOrEmpty(EnvironmentConfig.UserEmail))
-            {
-                Console.WriteLine("ERROR: UserEmail missing in configuration!");
-                throw new InvalidOperationException("Email credential is missing. Check User Secrets configuration.");
-            }
-            if(string.IsNullOrEmpty(EnvironmentConfig.Password))
-    {
-                Console.WriteLine("ERROR: Password missing in configuration!");
-                throw new InvalidOperationException("Password credential is missing. Check User Secrets configuration.");
-            }
-
-            Console.WriteLine($"Using credentials from configuration");
-            EnterEmail(EnvironmentConfig.UserEmail);
-            EnterPassword(EnvironmentConfig.Password);
-            ClickLogin();
-            return true;
-        }
-
-
-        public void Login(string email, string password) 
+        public void Login(string email, string password)
         {
             EnterEmail(email);
             EnterPassword(password);
             ClickLogin();
         }
 
-        // public string GetErrorText() => WaitForElementVisible(ErrorMessage).Text;
-         public string GetErrorText() => WaitGetElementText(ErrorMessage);
-        public bool IsSignOutVisible() => WaitForElementVisible(SignOutButton).Displayed;
-
-        //returning multiple elements from Method using Tuples 
-        public (bool homeDisplayed, bool signoutDisplayed) IsLoggedIn() 
+        public DashboardPage LoginWithSecrets()
         {
-            return (WaitForElementVisible(HomeButton).Displayed, WaitForElementVisible(SignOutButton).Displayed);
+            EnterEmail(EnvironmentConfig.UserEmail);
+            EnterPassword(EnvironmentConfig.Password);
+            ClickLogin();
+            return new DashboardPage(Driver);
         }
 
-        public string GetTextInEmailField() 
-        {
+        // Assertions / Checks 
+        public string GetErrorText() => WaitForToastAndGetText(ErrorMessage);
 
-            return WaitGetElementText(EmailInput);
-        }
+        public string GetTextInEmailField() => WaitGetElementText(EmailInput);
 
-        public string GetTextInPasswordField()
-        {
-            return WaitGetElementText(PasswordInput);
-        }
+        public string GetTextInPasswordField() => WaitGetElementText(PasswordInput);
 
-        public bool StillInLoginPage() 
+        public bool StillInLoginPage()
         {
-            return WaitForElementVisible(LoginButton).Displayed;
+            var element = WaitForElementVisible(LoginButton);
+
+            // Also check the URL to confirm we're still on the login page
+            bool urlIndicatesLoginPage = Driver.Url.Contains("login") || Driver.Url.EndsWith("/");
+
+            return element.Displayed && urlIndicatesLoginPage;
+           
         }
     }
+    //public static class WebDriverWaitExtensions
+    //{
+    //    public static IWebElement WaitForElementVisible(this WebDriverWait wait, By locator)
+    //    {
+    //        return wait.Until(driver =>
+    //        {
+    //            var element = driver.FindElement(locator);
+    //            return element.Displayed ? element : null;
+    //        });
+    //    }
+    //}
 }

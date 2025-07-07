@@ -1,22 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Text.Json;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using ClientApplicationTestProject.Models;
 using ClientApplicationTestProject.Pages;
 using ClientApplicationTestProject.Utilities;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
+using Newtonsoft.Json;
 
 namespace ClientApplicationTestProject.Tests
 {
-    public class ClientLoginTests : TestBase
+    public class LoginWithExternalDataTests : TestBase
     {
         private LoginPage _loginPage;
+        private DashboardPage _dashboardPage;
         private const string TestDataPath = @"Data\LoginTestData.json";
         public static IEnumerable<LoginTestModel> ValidLoginData => JsonDataReader.GetValidLogins(TestDataPath);
         public static IEnumerable<LoginTestModel> InvalidLoginData => JsonDataReader.GetInvalidLogins(TestDataPath);
-
-
         [SetUp]
         public void TestSetup()
         {
@@ -28,7 +30,9 @@ namespace ClientApplicationTestProject.Tests
         public void ValidLoginTest(LoginTestModel data)
         {
             _loginPage.Login(data.Email, data.Password);
-            Assert.That(_loginPage.IsSignOutVisible(), Is.True, "Signout button should be visible after login.");
+            _dashboardPage = new DashboardPage(Driver);
+            
+            Assert.That(_dashboardPage.SignOutVisible(), Is.True, "Signout button should be visible after login.");
 
         }
 
@@ -43,24 +47,24 @@ namespace ClientApplicationTestProject.Tests
             Assert.That(stillLoginBtnDisplayed, Is.True, "Login button should be visible after invalid login");
         }
 
-       /* [Test, Order(3)]
-        public void TestLoginWithJsonData()
-        {
-            // this method has written before putting into a generic json data read method
-            string jsonFileName = "LoginTestData.json";
-            var jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", jsonFileName);
-            var jsonString = File.ReadAllText(jsonFilePath);
+        /* [Test, Order(3)]
+         public void TestLoginWithJsonData()
+         {
+             // this method has written before putting into a generic json data read method
+             string jsonFileName = "LoginTestData.json";
+             var jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", jsonFileName);
+             var jsonString = File.ReadAllText(jsonFilePath);
 
-            var loginModels = JsonSerializer.Deserialize<List<LoginTestModel>>(jsonString);
+             var loginModels = JsonSerializer.Deserialize<List<LoginTestModel>>(jsonString);
 
-            // Get the first valid login details
-            var validLogin = loginModels.FirstOrDefault(m => m.IsValid);
+             // Get the first valid login details
+             var validLogin = loginModels.FirstOrDefault(m => m.IsValid);
 
-            _loginPage.Login(validLogin.Email, validLogin.Password);
+             _loginPage.Login(validLogin.Email, validLogin.Password);
 
-            // Assert login result (customize as needed)
-            Assert.That(_loginPage.IsSignOutVisible(), Is.True, "Signout button should be visible after login.");
-        }*/
+             // Assert login result (customize as needed)
+             Assert.That(_loginPage.IsSignOutVisible(), Is.True, "Signout button should be visible after login.");
+         }*/
 
         [Test, Order(3)]
         public void TestLoginWithJsonDataUsingGenericMethod()
@@ -72,9 +76,10 @@ namespace ClientApplicationTestProject.Tests
             var validLogin = loginModels.FirstOrDefault(m => m.IsValid);
 
             _loginPage.Login(validLogin.Email, validLogin.Password);
+            _dashboardPage = new DashboardPage(Driver);
 
             // Assert login result (customize as needed)
-            var getLoggedIn = _loginPage.IsLoggedIn();
+            var getLoggedIn = _dashboardPage.HasLoggedIn();
             Assert.That(getLoggedIn.homeDisplayed && getLoggedIn.signoutDisplayed, " Home and Signout buttons should be visible after login.");
         }
 
@@ -92,20 +97,12 @@ namespace ClientApplicationTestProject.Tests
             //print data 
             Console.WriteLine($"UserEmail: {userEmail} and Password: {password}");
             _loginPage.Login(userEmail, password);
+            _dashboardPage = new DashboardPage(Driver);
 
-            var getLoggedIn = _loginPage.IsLoggedIn();
+            var getLoggedIn = _dashboardPage.HasLoggedIn();
             Assert.That(getLoggedIn.homeDisplayed && getLoggedIn.signoutDisplayed, " Home and Signout buttons should be visible after login.");
 
         }
-        [Test]
-        public void LoginWithConfigurationData()
-        {
-            _loginPage.LoginWithDefaultCredentials();
-            var getLoggedIn = _loginPage.IsLoggedIn();
-            Assert.That(getLoggedIn.homeDisplayed && getLoggedIn.signoutDisplayed, " Home and Signout buttons should be visible after login.");
-
-        }
-
         [Test]
         public void VerifyLoginWithUserSecrets()
         {
@@ -134,10 +131,11 @@ namespace ClientApplicationTestProject.Tests
             }
 
             // Act
-            _loginPage.LoginWithDefaultCredentials();
+            _loginPage.LoginWithSecrets();
+            _dashboardPage = new DashboardPage(Driver);
 
             // Assert
-            var loginStatus = _loginPage.IsLoggedIn();
+            var loginStatus = _dashboardPage.HasLoggedIn();
             Assert.That(loginStatus.homeDisplayed && loginStatus.signoutDisplayed,
                         "Home and Signout buttons should be visible after login with User Secrets credentials.");
         }

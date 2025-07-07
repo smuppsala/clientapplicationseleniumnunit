@@ -1,5 +1,6 @@
 ﻿using AventStack.ExtentReports;
 using ClientApplicationTestProject.Utilities;
+using Microsoft.Extensions.Configuration;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
@@ -25,9 +26,13 @@ namespace ClientApplicationTestProject.Tests
             _test = ExtentReportHelper.Extent.CreateTest(TestContext.CurrentContext.Test.Name,
                 "Test Description: " + TestContext.CurrentContext.Test.Properties.Get("Description"));
 
-            Driver = new ChromeDriver();
+            //using driver factory to in creating Chrome/ Firefox Driver
+            Driver = Drivers.DriverFactory.GetDriver();
             Driver.Manage().Window.Maximize();
             Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+
+            //log browser mode info to report
+
             _test.Log(Status.Info, "Browser started and configured");
 
         }
@@ -105,6 +110,17 @@ namespace ClientApplicationTestProject.Tests
         {
             // Flush the report after all tests in the class have been executed
             ExtentReportHelper.FlushReport();
+        }
+
+        //helper methos do get the headless status
+        private bool GetBrowserHeadlessStatus() 
+        {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            return bool.TryParse(configuration["TestSettings:Headless"], out bool result) && result;
         }
     }
 }

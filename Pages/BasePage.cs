@@ -58,8 +58,51 @@ namespace ClientApplicationTestProject.Pages
         // Wait and Click
         protected void WaitAndClick(By locator)
         {
-            WaitForElementClickable(locator).Click();
+            try
+            {
+                // First ensure element is visible
+                WaitForElementVisible(locator);
+
+                // Then attempt standard click on clickable element
+                WaitForElementClickable(locator).Click();
+            }
+            catch (ElementClickInterceptedException)
+            {
+                // If click is intercepted, try JavaScript approach
+                IWebElement element = Driver.FindElement(locator);
+
+                // Scroll element into view first
+                ((IJavaScriptExecutor)Driver).ExecuteScript("arguments[0].scrollIntoView({block: 'center'});", element);
+
+                // Small delay after scrolling
+                Thread.Sleep(300);
+
+                try
+                {
+                    element.Click();
+                }
+                catch (Exception)
+                {
+                    // Force click using JavaScript as last resort
+                    ((IJavaScriptExecutor)Driver).ExecuteScript("arguments[0].click();", element);
+                }
+            }
         }
+        // wait element to be clickable and click by index
+        protected void WaitForElementsToBeClickableAndClickByIndex(IReadOnlyCollection<IWebElement> elements, int index = 0)
+        {
+            // First check if collection has elements
+            Wait.Until(driver => elements.Count > 0);
+
+            // Wait until all elements in collection are both displayed and enabled
+            Wait.Until(driver => elements.ElementAtOrDefault(index) != null &&
+                                 elements.ElementAt(index).Displayed &&
+                                 elements.ElementAt(index).Enabled);
+
+            // Click the element at the specified index (default is first element)
+            elements.ElementAt(index).Click();
+        }
+
 
         // Wait until element disappears
         protected bool WaitUntilInvisible(By locator)
@@ -83,9 +126,34 @@ namespace ClientApplicationTestProject.Pages
         }
 
         // Wait until Get the Toasted message text
-        protected string GetToastedMessageText(By locator)
+        protected string WaitForToastAndGetText(By locator)
         {
-            return Wait.Until(ExpectedConditions.ElementIsVisible(locator)).Text;
+            try
+            {
+                // Use a short explicit wait focused on toast messages
+                var toastWait = new WebDriverWait(Driver, TimeSpan.FromSeconds(3));
+                toastWait.PollingInterval = TimeSpan.FromMilliseconds(100);
+
+                // Wait for the element to be visible and get its text in one operation
+                string text = toastWait.Until(driver =>
+                {
+                    try
+                    {
+                        var element = driver.FindElement(locator);
+                        return element.Displayed ? element.Text : null;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                });
+
+                return text ?? string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
 
 

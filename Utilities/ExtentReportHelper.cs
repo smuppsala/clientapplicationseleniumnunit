@@ -59,7 +59,12 @@ namespace ClientApplicationTestProject.Utilities
                 Extent.AddSystemInfo("Environment", GetSetting("Environment", "QA"));
                 Extent.AddSystemInfo("Framework", ".NET 8.0");
                 Extent.AddSystemInfo("Browser", GetSetting("Browser", "Chrome"));
+                
+                //add headless information to the report
+                bool headless = bool.TryParse(GetSetting("Headless", "false"), out bool result) && result;
+                Extent.AddSystemInfo("Headless Mode", headless.ToString());
                 Extent.AddSystemInfo("Base URL", GetSetting("BaseUrl", "https://rahulshettyacademy.com/client"));
+
             }
         }
 

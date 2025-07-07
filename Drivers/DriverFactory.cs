@@ -21,15 +21,40 @@ namespace ClientApplicationTestProject.Drivers
         public static IWebDriver GetDriver() 
         {
             string browser = configuration["TestSettings:Browser"] ?? "Chrome";
+            bool headless = bool.TryParse(configuration["TestSettings:Headless"], out bool result) && result;
+            
             return browser.ToLower() switch
             {
-                "chrome" => new ChromeDriver(),
-                "firefox" => new FirefoxDriver(),
+                "chrome" => CreateChromDriver(headless),
+                "firefox" => CreateFirefoxDriver(headless),
                 _ => throw new NotSupportedException($"Browser '{browser}' is not supported")
             };
         }
 
+        private static IWebDriver CreateChromDriver(bool headless)
+        {
+            var options = new ChromeOptions();
 
+            if (headless) 
+            {
+                options.AddArgument("--headless=new");
+                options.AddArgument("--disable-gpu");
+                options.AddArgument("--window-size=1920,1080");
+            }
+            return new ChromeDriver(options);
+        }
 
+        private static IWebDriver CreateFirefoxDriver(bool headless)
+        {
+            var options = new FirefoxOptions();
+
+            if (headless)
+            {
+                options.AddArgument("--headless=new");
+                options.AddArgument("--disable-gpu");
+                options.AddArgument("--window-size=1920,1080");
+            }
+            return new FirefoxDriver(options);
+        }
     }
 }
