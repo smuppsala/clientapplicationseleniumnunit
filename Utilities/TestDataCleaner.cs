@@ -52,7 +52,7 @@ namespace ClientApplicationTestProject.Utilities
             }
             else
             {
-                _mainMenuPage.GoToCartWhenHaveItemsInIt();
+                _mainMenuPage.GoToCart();
                 ClearCart();
                 _mainMenuPage.SignOut();
             }    

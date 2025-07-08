@@ -58,35 +58,10 @@ namespace ClientApplicationTestProject.Pages
         // Wait and Click
         protected void WaitAndClick(By locator)
         {
-            try
-            {
-                // First ensure element is visible
-                WaitForElementVisible(locator);
-
-                // Then attempt standard click on clickable element
-                WaitForElementClickable(locator).Click();
-            }
-            catch (ElementClickInterceptedException)
-            {
-                // If click is intercepted, try JavaScript approach
-                IWebElement element = Driver.FindElement(locator);
-
-                // Scroll element into view first
-                ((IJavaScriptExecutor)Driver).ExecuteScript("arguments[0].scrollIntoView({block: 'center'});", element);
-
-                // Small delay after scrolling
-                Thread.Sleep(300);
-
-                try
-                {
-                    element.Click();
-                }
-                catch (Exception)
-                {
-                    // Force click using JavaScript as last resort
-                    ((IJavaScriptExecutor)Driver).ExecuteScript("arguments[0].click();", element);
-                }
-            }
+            // Wait for spinner overlay to disappear (update the locator as needed)
+            WaitUntilInvisible(By.CssSelector(".ngx-spinner-overlay"));
+            WaitForElementVisible(locator);
+            WaitForElementClickable(locator).Click();
         }
         // wait element to be clickable and click by index
         protected void WaitForElementsToBeClickableAndClickByIndex(IReadOnlyCollection<IWebElement> elements, int index = 0)
@@ -102,7 +77,6 @@ namespace ClientApplicationTestProject.Pages
             // Click the element at the specified index (default is first element)
             elements.ElementAt(index).Click();
         }
-
 
         // Wait until element disappears
         protected bool WaitUntilInvisible(By locator)

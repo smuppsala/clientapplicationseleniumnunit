@@ -49,7 +49,7 @@ namespace ClientApplicationTestProject.Tests
             Assert.That(_cartPage.CartItems.Count, Is.Zero, "No Products in Your Cart !");
 
             _dashboardPage = _cartPage.ContinueShopping();
-            _dashboardPage.AddProductToCartByName(productName);
+            string productName = _dashboardPage.AddProductToCartByIndex(1);
 
             _cartPage = _dashboardPage.GoToCart();
 

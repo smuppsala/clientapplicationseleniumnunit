@@ -10,39 +10,20 @@ namespace ClientApplicationTestProject.Pages
         private By SignOutButton => By.XPath("//button[text()=' Sign Out ']");
         private By HomeButton => By.XPath("//button[text()=' HOME ']");
         private By CartIcon => By.CssSelector("button[routerlink*='cart']");
-        private By CartItemsNumber => By.XPath("//button[@class='btn btn-custom']//label");
+        private By CartItemsNumber => By.CssSelector("button[routerlink*='dashboard/cart'] label");
 
         public void SignOut()
         {
             WaitAndClick(SignOutButton);
         }
-
-        public CartPage GoToCartWhenHaveItemsInIt()
+        public void GoToCart()
         {
-            var cartValue = GetNumberOfProductsInCart();
-            if (cartValue != null)
-            {
-                WaitForElementVisible(CartItemsNumber);
-                WaitAndClick(CartIcon);
-                return new CartPage(Driver);
-            }
-            return null;
+            WaitAndClick(CartIcon);
         }
 
         public string GetNumberOfProductsInCart()
         {
-            WaitForElementVisible(CartItemsNumber);
             var cartValue = WaitGetElementText(CartItemsNumber);
-            Console.WriteLine(cartValue);
-            if (!int.TryParse(cartValue, out int numericCartValue))
-            {
-                // Handle non-numeric values explicitly
-                return null;
-            }
-            if (numericCartValue <= 0)
-            {
-                return null;
-            }
             return cartValue;
         }
 

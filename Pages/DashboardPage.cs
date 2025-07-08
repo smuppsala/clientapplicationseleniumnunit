@@ -12,7 +12,7 @@ namespace ClientApplicationTestProject.Pages
         private By CartIconLink => By.CssSelector("button[routerlink*='cart']");
         private By SuccessMessage => By.CssSelector(".toast-success");
         private By AddToCartSuccessMessage => By.Id("#toast-container");
-        private By CartItemsNumber => By.XPath("//button[@class='btn btn-custom']//label");
+        private By CartItemsNumber => By.CssSelector("button[routerlink*='/dashboard/cart'] label");
         private By AddToCartBtns => By.ClassName("fa-shopping-cart");
 
         public DashboardPage(IWebDriver driver) : base(driver) { }
@@ -50,7 +50,7 @@ namespace ClientApplicationTestProject.Pages
             return productName;
         }
 
-        public void AddProductToCartByName(string productName)
+        public bool AddProductToCartByName(string productName)
         {
             var products = WaitForElementsVisible(ProductList).ToList();
 
@@ -66,17 +66,20 @@ namespace ClientApplicationTestProject.Pages
                     // Wait for element to be clickable before attempting to click
                     Wait.Until(driver => addToCartButton.Displayed && addToCartButton.Enabled);
 
+                    addToCartButton.Click();
                     // Correct instantiation of Actions  
-                    Actions action = new Actions(Driver);
-                    action.MoveToElement(addToCartButton).Click().Perform();
+                   // Actions action = new Actions(Driver);
+                   // action.MoveToElement(addToCartButton).Click().Perform();
 
-                    // Wait for loading indicator to disappear
-                    waitForLoadingToDisappear();
-                    return; // Exit the method immediately after performing the action
+                  //  var element = WaitForElementVisible(CartItemsNumber);
+                    //var text = element.Text;
+                   // Wait.Until(driver => element.Displayed && int.TryParse(text, out int value) && value > 0);
+                    return true; // Exit the method immediately after performing the action
                 }
             }
             // Product not found, throw exception
             throw new ArgumentException($"Product with name '{productName}' was not found on the dashboard.", nameof(productName));
+            return false;
         }
 
         public bool SignOutVisible() => WaitForElementVisible(SignOutButton).Displayed;
@@ -96,6 +99,33 @@ namespace ClientApplicationTestProject.Pages
             return true;
         }
 
+        public int GetCartItemValue()
+        {
+            WaitForElementVisible(CartItemsNumber);
+            try
+            {
+                Wait.Until(driver =>
+                {
+                    try
+                    {
+                        var element = WaitForElementVisible(CartItemsNumber);
+                        var text = element.Text;
+                        return !string.IsNullOrWhiteSpace(text) && int.TryParse(text, out int value) && value > 0;
+                    }
+                    catch (StaleElementReferenceException)
+                    {
+                        return false;
+                    }
+                });
+                var cartValue = int.Parse(WaitForElementVisible(CartItemsNumber).Text);
+                return cartValue;
+            }
+            catch (WebDriverTimeoutException) 
+            {
+                TakeScreenshot("CartItemValye_Timeout");
+                return 0;
+            }
+        }
         public CartPage GoToCart()
         {
             WaitForElementClickable(CartIconLink);

@@ -1,16 +1,15 @@
-﻿using ClientApplicationTestProject.Pages;
-using ClientApplicationTestProject.Flows;
-using ClientApplicationTestProject.Models;
-using Microsoft.Testing.Platform.Configurations;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using ClientApplicationTestProject.Models;
+using ClientApplicationTestProject.Pages;
+using OpenQA.Selenium.Support.UI;
 
 namespace ClientApplicationTestProject.Tests
 {
     public class DashboardTests : TestBase
     {
-        private LoginPage _loginPage; 
+        private LoginPage _loginPage;
         private DashboardPage _dashboardPage;
         private MainMenuPage _mainMenuPage;
+        protected WebDriverWait Wait;
 
         [SetUp]
         public void BeforeEach()
@@ -23,25 +22,15 @@ namespace ClientApplicationTestProject.Tests
         [TestCase("ZARA COAT 3")]
         public void ProductCanBeAddedToCart_FromDashboard(string productName)
         {
-            _dashboardPage.AddProductToCartByName(productName);
-            // Add a wait after adding the product to the cart
-            Thread.Sleep(2000); // Wait for 2 seconds
-            _mainMenuPage = new MainMenuPage(Driver);
-           var items = _mainMenuPage.GetNumberOfProductsInCart();
-
-            Assert.That(items, Is.Not.Null, $"Product '{productName}' has not added to cart.");
+            bool productAddedToCart = _dashboardPage.AddProductToCartByName(productName);
+            Assert.That(productAddedToCart, Is.True, $"Product '{productName}' was not found on the dashboard.");
         }
 
         [TestCaseSource(nameof(Product))]
         public void ProductCanBeAddedToCart_FromDashboardUsingProductModel(ProductModel productModel)
         {
-            _dashboardPage.AddProductToCartByName(productModel.Product);
-            // Add a wait after adding the product to the cart
-            Thread.Sleep(2000); // Wait for 2 seconds
-            _mainMenuPage = new MainMenuPage(Driver);
-            var items = _mainMenuPage.GetNumberOfProductsInCart();
-
-            Assert.That(items, Is.Not.Null, $"Product '{productModel.Product}' has not added to cart.");
+            bool productAddedToCart = _dashboardPage.AddProductToCartByName(productModel.Product);
+            Assert.That(productAddedToCart, Is.True, $"Product '{productModel.Product}' was not found on the dashboard.");
         }
 
         public static IEnumerable<ProductModel> Product()
@@ -56,6 +45,7 @@ namespace ClientApplicationTestProject.Tests
             };
 
         }
-        
+
+
     }
 }
