@@ -128,6 +128,7 @@ namespace ClientApplicationTestProject.Pages
         }
         public CartPage GoToCart()
         {
+            waitForLoadingToDisappear();
             WaitForElementClickable(CartIconLink);
             WaitAndClick(CartIconLink);
             var cartPage = new CartPage(Driver);
